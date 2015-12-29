@@ -11,3 +11,4 @@ Create a device capable of sniffing the CAN Bus of a 2010 BMW R1200 GS motorcycl
 
 ## Software
 - [Seeeduino CAN Bus Shield Library](https://github.com/Seeed-Studio/CAN_BUS_Shield)
+- [SparkFun CAN-Bus Arduino Library](https://github.com/sparkfun/SparkFun_CAN-Bus_Arduino_Library)
