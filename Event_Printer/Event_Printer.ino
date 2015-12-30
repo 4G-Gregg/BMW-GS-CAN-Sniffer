@@ -3,6 +3,9 @@
 #include "mcp_can.h"
 #include "BMW_R1200_GS_K25_CAN_Bus_Defines.h"
 
+#define HI_NIBBLE(b) (((b) >> 4) & 0x0F)
+#define LO_NIBBLE(b) ((b) & 0x0F)
+
 MCP_CAN CAN(9);
 
 void setup(){
@@ -29,7 +32,6 @@ START_INIT:
     CAN.init_Filt(5, 0, MSG_ID_ABS_Control_Module_2);    
     CAN.init_Filt(6, 0, MSG_ID_Instrument_Cluster);
     CAN.init_Filt(7, 0, MSG_ID_Instrument_Cluster_2);    
-    
 }
 
 
@@ -44,7 +46,7 @@ void loop(){
         {
           case MSG_ID_BMSK_Control_Module:
           {
-            
+            handle_MSG_ID_BMSK_Control_Module(data, length);
           } break;
           
           case MSG_ID_BMSK_Control_Module_2:
@@ -54,7 +56,7 @@ void loop(){
 
           case MSG_ID_ZFE_Control_Module:
           {
-            
+            handle_MSG_ID_ZFE_Control_Module(data, length);
           } break;
           
           case MSG_ID_ZFE_Control_Module_2:
@@ -80,11 +82,10 @@ void loop(){
           case MSG_ID_Instrument_Cluster_2:
           {
             
-          } break;
-          
+          } break;   
         }
      }
-
+}
 /*
     if(CAN_MSGAVAIL == CAN.checkReceive()){
         CAN.readMsgBuf(&length, data);
@@ -97,4 +98,32 @@ void loop(){
         Serial.print(";");
     }
 */
+
+void handle_MSG_ID_BMSK_Control_Module(unsigned char *data, unsigned char length)
+{
+    Serial.print("BMSK ");
 }
+
+void handle_MSG_ID_ZFE_Control_Module(unsigned char *data, unsigned char length)
+{
+    Serial.println("ZFE:");
+
+    // HIGH BEAM
+    unsigned char hbyte7 = HI_NIBBLE(data[6]);
+    Serial.print("High beam ");    
+    if( hbyte7 == 0x09 ) Serial.print("ON");
+    else if( hbyte7 == 0x0A ) Serial.print("OFF");
+    else Serial.print("ERROR-Other");
+    Serial.println("");
+
+    // TURN SIGNAL
+    unsigned char byte8 = data[7];
+    Serial.print("Turn Signals ");    
+    if( byte8 == 0xCF ) Serial.print("OFF");
+    else if( byte8 == 0xD7 ) Serial.print("LEFT ON");
+    else if( byte8 == 0xE7 ) Serial.print("RIGHT ON");
+    else if( byte8 == 0xEF ) Serial.print("BOTH ON");
+    else Serial.print("ERROR-Other");
+    Serial.println("");
+}
+
