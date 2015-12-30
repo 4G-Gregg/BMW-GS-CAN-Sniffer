@@ -21,12 +21,14 @@ START_INIT:
     CAN.init_Mask(1, 0, 0xfff);
 
     //Set filters
-    CAN.init_Filt(0, 0, 0x10C);
-    CAN.init_Filt(1, 0, 0x130);
-    CAN.init_Filt(2, 0, 0x294);
-    CAN.init_Filt(3, 0, 0x2BC);
-    CAN.init_Filt(4, 0, 0x2D0);
-    CAN.init_Filt(5, 0, 0x3F8);
+    CAN.init_Filt(0, 0, MSG_ID_BMSK_Control_Module);
+    CAN.init_Filt(1, 0, MSG_ID_BMSK_Control_Module_2);    
+    CAN.init_Filt(2, 0, MSG_ID_ZFE_Control_Module);    
+    CAN.init_Filt(3, 0, MSG_ID_ZFE_Control_Module_2);   
+    CAN.init_Filt(4, 0, MSG_ID_ABS_Control_Module);
+    CAN.init_Filt(5, 0, MSG_ID_ABS_Control_Module_2);    
+    CAN.init_Filt(6, 0, MSG_ID_Instrument_Cluster);
+    CAN.init_Filt(7, 0, MSG_ID_Instrument_Cluster_2);    
     
 }
 
@@ -45,7 +47,7 @@ void loop(){
             
           } break;
           
-          case MSG_ID_BMSK Control Module_2:
+          case MSG_ID_BMSK_Control_Module_2:
           {
             
           } break;
@@ -55,7 +57,7 @@ void loop(){
             
           } break;
           
-          case MSG_ID_ZFE Control Module_2:
+          case MSG_ID_ZFE_Control_Module_2:
           {
             
           } break;
