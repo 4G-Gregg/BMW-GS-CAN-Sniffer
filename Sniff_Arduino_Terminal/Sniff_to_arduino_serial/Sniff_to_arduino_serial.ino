@@ -14,6 +14,8 @@ START_INIT:
         delay(100);
         goto START_INIT;
     }
+
+    Serial.println("Starting to initialize CAN");
    
     //Set filter masks
     CAN.init_Mask(0, 0, 0xfff);
@@ -26,7 +28,7 @@ START_INIT:
     CAN.init_Filt(3, 0, 0x2BC);
     CAN.init_Filt(4, 0, 0x2D0);
     CAN.init_Filt(5, 0, 0x3F8);
-    
+    Serial.println("CAN Initialized");
 }
 
 
