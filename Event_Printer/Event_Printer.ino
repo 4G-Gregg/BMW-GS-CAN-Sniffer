@@ -69,12 +69,12 @@ void loop(){
           
           case MSG_ID_ABS_Control_Module:
           {
-            
+           
           } break;
           
           case MSG_ID_ABS_Control_Module_2:
           {
-            
+           
           } break;
           
           case MSG_ID_Instrument_Cluster:
@@ -104,18 +104,18 @@ void loop(){
 
 void handle_MSG_ID_BMSK_Control_Module(unsigned char *data, unsigned char length)
 {
-    Serial.print("BMSK ");
+    
 }
 
 void handle_MSG_ID_ZFE_Control_Module(unsigned char *data, unsigned char length)
 {
-    Serial.println("ZFE:");
+    
 
     // HIGH BEAM
-    unsigned char hbyte7 = HI_NIBBLE(data[6]);
-    Serial.print("High beam ");    
-    if( hbyte7 == 0x09 ) Serial.print("ON");
-    else if( hbyte7 == 0x0A ) Serial.print("OFF");
+    unsigned char lnibble7 = LO_NIBBLE(data[6]);
+    Serial.print("High beam ");
+    if( lnibble7 == 0x09 ) Serial.print("ON");
+    else if( lnibble7 == 0x0A ) Serial.print("OFF");
     else Serial.print("ERROR-Other");
     Serial.println("");
 
