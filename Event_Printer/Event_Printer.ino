@@ -155,6 +155,14 @@ void handle_MSG_ID_ZFE_Control_Module_2(unsigned char *data, unsigned char lengt
     else if( hnibble8 == 0x0E ) Serial.print("HIGH");    
     else Serial.print("ERROR-Other");
     Serial.println("");
+
+    // INFO BUTTON
+    unsigned char hnibble6 = HI_NIBBLE(data[5]);
+    Serial.print("Info Button: ");
+    if( hnibble6 == 0x05 ) Serial.print("SHORT PRESS");
+    else if( hnibble6 == 0x06 ) Serial.print("LONG PRESS");   
+    else Serial.print("ERROR-Other");
+    Serial.println("");
 }
 
 
