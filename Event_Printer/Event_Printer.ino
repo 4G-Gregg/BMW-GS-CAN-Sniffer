@@ -140,7 +140,20 @@ void handle_MSG_ID_ABS_Control_Module(unsigned char *data, unsigned char length)
 
 void handle_MSG_ID_BMSK_Control_Module(unsigned char *data, unsigned char length)
 {
-    
+    // THROTTLE POSITION
+    unsigned char byte2 = data[1];
+    uint8_t throttlePosition = (byte2 / 255)*100;
+    Serial.print("Throttle Position: ");
+    Serial.print(throttlePosition, DEC);
+    Serial.println(); 
+
+    // CLUTCH LEVER
+    unsigned char hnibble5 = HI_NIBBLE(data[4]);
+    Serial.print("Clutch: ");
+    if( hnibble5 == 0x0A ) Serial.print("IN");
+    else if( hnibble5 == 0x06 ) Serial.print("OUT");
+    else Serial.print("ERROR-Other");
+    Serial.println("");
 }
 
 void handle_MSG_ID_ZFE_Control_Module(unsigned char *data, unsigned char length)
