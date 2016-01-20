@@ -64,7 +64,7 @@ void loop(){
           
           case MSG_ID_ZFE_Control_Module_2:
           {
-            
+            handle_MSG_ID_ZFE_Control_Module_2(data, length);
           } break;
           
           case MSG_ID_ABS_Control_Module:
@@ -79,12 +79,12 @@ void loop(){
           
           case MSG_ID_Instrument_Cluster:
           {
-            
+            handle_MSG_ID_Instrument_Cluster(data, length);
           } break;
           
           case MSG_ID_Instrument_Cluster_2:
           {
-            
+            handle_MSG_ID_Instrument_Cluster_2(data, length);
           } break;   
         }
      }
@@ -102,6 +102,23 @@ void loop(){
     }
 */
 
+void handle_MSG_ID_Instrument_Cluster(unsigned char *data, unsigned char length)
+{
+    Serial.print("Instrument Cluster: ");
+    
+}
+
+void handle_MSG_ID_Instrument_Cluster_2(unsigned char *data, unsigned char length)
+{
+    // AMBIENT LIGHT SENSOR
+    unsigned char lnibble2 = LO_NIBBLE(data[1]);
+    Serial.print("Ambient Light Sensor ");
+    if( lnibble2 == 0x07 ) Serial.print("DARK");
+    else if( lnibble2 == 0x03 ) Serial.print("LIGHT");
+    else Serial.print("ERROR-Other");
+    Serial.println("");   
+}
+
 void handle_MSG_ID_BMSK_Control_Module(unsigned char *data, unsigned char length)
 {
     
@@ -109,8 +126,6 @@ void handle_MSG_ID_BMSK_Control_Module(unsigned char *data, unsigned char length
 
 void handle_MSG_ID_ZFE_Control_Module(unsigned char *data, unsigned char length)
 {
-    
-
     // HIGH BEAM
     unsigned char lnibble7 = LO_NIBBLE(data[6]);
     Serial.print("High beam ");
@@ -123,10 +138,23 @@ void handle_MSG_ID_ZFE_Control_Module(unsigned char *data, unsigned char length)
     unsigned char byte8 = data[7];
     Serial.print("Turn Signals ");    
     if( byte8 == 0xCF ) Serial.print("OFF");
-    else if( byte8 == 0xD7 ) Serial.print("LEFT ON");
-    else if( byte8 == 0xE7 ) Serial.print("RIGHT ON");
+    else if( byte8 == 0xD7 ) Serial.print("LEFT ONLY");
+    else if( byte8 == 0xE7 ) Serial.print("RIGHT ONLY");
     else if( byte8 == 0xEF ) Serial.print("BOTH ON");
     else Serial.print("ERROR-Other");
     Serial.println("");
 }
+
+void handle_MSG_ID_ZFE_Control_Module_2(unsigned char *data, unsigned char length)
+{
+    // HEATED GRIPS
+    unsigned char hnibble8 = HI_NIBBLE(data[7]);
+    Serial.print("Heated Grips: ");
+    if( hnibble8 == 0x0C ) Serial.print("OFF");
+    else if( hnibble8 == 0x0D ) Serial.print("LOW");
+    else if( hnibble8 == 0x0E ) Serial.print("HIGH");    
+    else Serial.print("ERROR-Other");
+    Serial.println("");
+}
+
 
