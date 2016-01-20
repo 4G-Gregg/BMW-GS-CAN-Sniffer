@@ -69,7 +69,7 @@ void loop(){
           
           case MSG_ID_ABS_Control_Module:
           {
-           
+           handle_MSG_ID_ABS_Control_Module(data, length);
           } break;
           
           case MSG_ID_ABS_Control_Module_2:
@@ -117,6 +117,25 @@ void handle_MSG_ID_Instrument_Cluster_2(unsigned char *data, unsigned char lengt
     else if( lnibble2 == 0x03 ) Serial.print("LIGHT");
     else Serial.print("ERROR-Other");
     Serial.println("");   
+}
+
+void handle_MSG_ID_ABS_Control_Module(unsigned char *data, unsigned char length)
+{
+    // BRAKE LEVERS
+    unsigned char hnibble7 = HI_NIBBLE(data[6]);
+    Serial.print("Brake Levers: ");
+    if( hnibble7 == 0x07 ) Serial.print("Front");
+    else if( hnibble7 == 0x0B ) Serial.print("Rear");
+    else Serial.print("ERROR-Other");
+    Serial.println("");
+
+    // ABS Status
+    unsigned char lnibble2 = LO_NIBBLE(data[1]);
+    Serial.print("ABS: ");
+    if( lnibble2 == 0x05 ) Serial.print("ON");
+    else if( lnibble2 == 0x0B ) Serial.print("OFF");
+    else Serial.print("ERROR-Other");
+    Serial.println("");
 }
 
 void handle_MSG_ID_BMSK_Control_Module(unsigned char *data, unsigned char length)
