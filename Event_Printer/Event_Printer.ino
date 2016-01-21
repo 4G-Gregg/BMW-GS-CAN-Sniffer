@@ -40,23 +40,23 @@ void setup_CAN_Bus_Filters()
         Serial.println("Retrying..");
         delay(100);
     }
-    
+
     Serial.println("Starting to initialize CAN");
-   
-    //Set filter masks
+
+    // Set filter masks
     CAN.init_Mask(0, 0, 0xfff);
     CAN.init_Mask(1, 0, 0xfff);
 
-    //Set filters
+    // Set filters
     CAN.init_Filt(0, 0, MSG_ID_BMSK_Control_Module);
-    CAN.init_Filt(1, 0, MSG_ID_BMSK_Control_Module_2);    
-    CAN.init_Filt(2, 0, MSG_ID_ZFE_Control_Module);    
-    CAN.init_Filt(3, 0, MSG_ID_ZFE_Control_Module_2);   
+    CAN.init_Filt(1, 0, MSG_ID_BMSK_Control_Module_2);
+    CAN.init_Filt(2, 0, MSG_ID_ZFE_Control_Module);
+    CAN.init_Filt(3, 0, MSG_ID_ZFE_Control_Module_2);
     CAN.init_Filt(4, 0, MSG_ID_ABS_Control_Module);
-    CAN.init_Filt(5, 0, MSG_ID_ABS_Control_Module_2);    
+    CAN.init_Filt(5, 0, MSG_ID_ABS_Control_Module_2);
     CAN.init_Filt(6, 0, MSG_ID_Instrument_Cluster);
-    CAN.init_Filt(7, 0, MSG_ID_Instrument_Cluster_2);    
-    
+    CAN.init_Filt(7, 0, MSG_ID_Instrument_Cluster_2);
+
     Serial.println("CAN Initialized");
 }
 
