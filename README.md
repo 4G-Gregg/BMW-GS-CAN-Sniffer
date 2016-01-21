@@ -31,6 +31,11 @@ The extremely overpriced BMW repair plug and wiring harness can be [purchased he
 
 ![3D Printed Prototype Case](http://i.imgur.com/rbw4ONJ.jpg)
 
+## Protocol Parsing
+There is a group of people working on reverse engineering the CAN bus messages
+in a [Google Spreadsheet](https://docs.google.com/spreadsheets/d/1tUrOES5fQZa92Robr6uP8v2dzQDq9ohHjUiTU3isqdc/edit#gid=0). I've used this as the basis for my parsing, but have
+found some of the information to be incorrect.
+
 ## Resources
 - [The Congers CANBusGateway Project](http://development.thecongers.org/home/canbusgateway)
 - [ADVRider CAN Bus Reversing Thread](http://advrider.com/index.php?threads/1200gs-canbus-reversing.1063196/)
