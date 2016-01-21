@@ -13,11 +13,11 @@
 
 /* Debug Macros */
 #if DEBUG
-#define DEBUG_PRINT(x)    Serial.print(x)
-#define DEBUG_PRINT_LN(x) Serial.println(x)
-#elif
-#define DEBUG_PRINT(x)
-#define DEBUG_PRINT_LN(x)
+#define DEBUG_PRINT(x,...)    Serial.print(x,__VA_ARGS__)
+#define DEBUG_PRINT_LN(x,...) Serial.println(x,__VA_ARGS__)
+#else
+#define DEBUG_PRINT(x,...)
+#define DEBUG_PRINT_LN(x,...)
 #endif // DEBUG
 
 MCP_CAN CAN(9);
