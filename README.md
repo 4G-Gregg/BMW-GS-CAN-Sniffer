@@ -1,7 +1,7 @@
 # BMW R1200GS CAN-Bus Sniffer
 
 ## Objective
-Create a device capable of sniffing the CAN Bus of a 2010 BMW R1200 GS motorcycle. This will be accomplished using an Arduino and CAN Bus shield and splicing into an existing CAN Bus node.
+Create a device capable of sniffing the CAN Bus of a 2010 BMW R1200 GS motorcycle. This will be accomplished using an Arduino and CAN Bus shield and appending the sniffer to the motorcycle's CAN Bus.
 
 ## Hardware
 ### [Arduino Uno](https://www.arduino.cc/en/Main/ArduinoBoardUno)<br>
