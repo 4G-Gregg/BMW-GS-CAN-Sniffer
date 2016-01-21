@@ -2,6 +2,7 @@
 #include <SPI.h>
 #include "mcp_can.h"
 #include "BMW_R1200_GS_K25_CAN_Bus_Defines.h"
+#include "BMW_R1200_GS_K25_State.h"
 
 /* Compile time Flags */
 #define DEBUG 0
