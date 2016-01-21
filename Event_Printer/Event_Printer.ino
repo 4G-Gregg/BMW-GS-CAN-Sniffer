@@ -32,7 +32,7 @@ void setup()
 
 void loop()
 {
-  process_CAN_Messages();
+    process_CAN_Messages();
 }
 
 void setup_CAN_Bus_Filters()
@@ -94,7 +94,7 @@ void process_CAN_Messages()
 
           case MSG_ID_ABS_Control_Module:
           {
-           handle_MSG_ID_ABS_Control_Module(data, length);
+            handle_MSG_ID_ABS_Control_Module(data, length);
           } break;
 
           case MSG_ID_ABS_Control_Module_2:
