@@ -8,17 +8,25 @@
 
 MCP_CAN CAN(9);
 
-void setup(){
+void setup()
+{
     Serial.begin(115200);
+    setup_CAN_Bus_Filters();
+}
 
-START_INIT:
-    if(CAN_OK != CAN.begin(CAN_500KBPS)){
+void loop()
+{
+  process_CAN_Messages();
+}
+
+void setup_CAN_Bus_Filters()
+{
+    while(CAN_OK != CAN.begin(CAN_500KBPS)){
         Serial.println("Failed to initialize CAN");
         Serial.println("Retrying..");
         delay(100);
-        goto START_INIT;
     }
-
+    
     Serial.println("Starting to initialize CAN");
    
     //Set filter masks
@@ -34,11 +42,12 @@ START_INIT:
     CAN.init_Filt(5, 0, MSG_ID_ABS_Control_Module_2);    
     CAN.init_Filt(6, 0, MSG_ID_Instrument_Cluster);
     CAN.init_Filt(7, 0, MSG_ID_Instrument_Cluster_2);    
+    
     Serial.println("CAN Initialized");
 }
 
-
-void loop(){
+void process_CAN_Messages()
+{
     unsigned char length = 0;
     unsigned char data[8];
 
@@ -89,23 +98,10 @@ void loop(){
         }
      }
 }
-/*
-    if(CAN_MSGAVAIL == CAN.checkReceive()){
-        CAN.readMsgBuf(&length, data);
-        Serial.print(CAN.getCanId(),HEX);
-        for(int i = 0; i<length; i++){
-            Serial.print(",");
-            if( data[i] < 0x10){ Serial.print("0");}
-            Serial.print(data[i], HEX);
-        }
-        Serial.print(";");
-    }
-*/
 
 void handle_MSG_ID_Instrument_Cluster(unsigned char *data, unsigned char length)
 {
     Serial.print("Instrument Cluster: ");
-    
 }
 
 void handle_MSG_ID_Instrument_Cluster_2(unsigned char *data, unsigned char length)
