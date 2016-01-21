@@ -12,13 +12,13 @@
 #define LO_NIBBLE(b) ((b) & 0x0F)
 
 /* Debug Macros */
-#if DEBUG
-#define DEBUG_PRINT(x,...)    Serial.print(x,__VA_ARGS__)
-#define DEBUG_PRINT_LN(x,...) Serial.println(x,__VA_ARGS__)
+#ifdef DEBUG
+    #define DEBUG_PRINT(...) Serial.print(__VA_ARGS__)
+    #define DEBUG_PRINT_LN(...) Serial.println(__VA_ARGS__)
 #else
-#define DEBUG_PRINT(x,...)
-#define DEBUG_PRINT_LN(x,...)
-#endif // DEBUG
+    #define DEBUG_PRINT(...)
+    #define DEBUG_PRINT_LN(...)
+#endif
 
 MCP_CAN CAN(9);
 
