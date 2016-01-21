@@ -20,6 +20,7 @@
     #define DEBUG_PRINT_LN(...)
 #endif
 
+/* Globals */
 MCP_CAN CAN(9);
 K25_State_t motorcycle_state;
 
