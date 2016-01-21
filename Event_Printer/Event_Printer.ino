@@ -130,7 +130,7 @@ void handle_MSG_ID_ABS_Control_Module(unsigned char *data, unsigned char length)
     Serial.println("");
 
     // ABS Status
-    unsigned char lnibble2 = LO_NIBBLE(data[1]);
+    unsigned char lnibble2 = HI_NIBBLE(data[1]);
     Serial.print("ABS: ");
     if( lnibble2 == 0x05 ) Serial.print("ON");
     else if( lnibble2 == 0x0B ) Serial.print("OFF");
