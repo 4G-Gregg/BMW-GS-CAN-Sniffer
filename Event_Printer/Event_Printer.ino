@@ -182,9 +182,9 @@ void handle_MSG_ID_ZFE_Control_Module_2(unsigned char *data, unsigned char lengt
     // HEATED GRIPS
     unsigned char hnibble8 = HI_NIBBLE(data[7]);
     Serial.print("Heated Grips: ");
-    if( hnibble8 == 0x0C ) Serial.print("OFF");
-    else if( hnibble8 == 0x0D ) Serial.print("LOW");
-    else if( hnibble8 == 0x0E ) Serial.print("HIGH");    
+    if( hnibble8 == 0x0F ) Serial.print("OFF");
+    else if( hnibble8 == 0x0C ) Serial.print("LOW");
+    else if( hnibble8 == 0x0D ) Serial.print("HIGH");    
     else Serial.print("ERROR-Other");
     Serial.println("");
 
