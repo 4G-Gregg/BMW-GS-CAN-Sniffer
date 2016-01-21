@@ -122,10 +122,11 @@ void handle_MSG_ID_Instrument_Cluster_2(unsigned char *data, unsigned char lengt
 void handle_MSG_ID_ABS_Control_Module(unsigned char *data, unsigned char length)
 {
     // BRAKE LEVERS
-    unsigned char hnibble7 = HI_NIBBLE(data[6]);
+    unsigned char lnibble7 = LO_NIBBLE(data[6]);
     Serial.print("Brake Levers: ");
-    if( hnibble7 == 0x07 ) Serial.print("Front");
-    else if( hnibble7 == 0x0B ) Serial.print("Rear");
+    if( lnibble7 == 0x07 ) Serial.print("Front");
+    else if( lnibble7 == 0x0B ) Serial.print("Rear");
+    else if( lnibble7 == 0x03 ) Serial.print("None");    
     else Serial.print("ERROR-Other");
     Serial.println("");
 
