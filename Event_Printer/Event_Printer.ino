@@ -158,10 +158,10 @@ void handle_MSG_ID_ABS_Control_Module(unsigned char *data, unsigned char length)
 void handle_MSG_ID_BMSK_Control_Module(unsigned char *data, unsigned char length)
 {
     // THROTTLE POSITION
-    float byte2 = data[1];
-    float throttlePosition = (byte2 / 255) * 100;
+    float fvalue = data[1];
+    motorcycle_state.throttle_position = (K25_Throttle_Position_t)K25_THROTTLE_PERCENTAGE(fvalue);
     DEBUG_PRINT("Throttle Position: ");
-    DEBUG_PRINT(throttlePosition, DEC);
+    DEBUG_PRINT(motorcycle_state.throttle_position, DEC);
     DEBUG_PRINT_LN();
 
     // CLUTCH LEVER

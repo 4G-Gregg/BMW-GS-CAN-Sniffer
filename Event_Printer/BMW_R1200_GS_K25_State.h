@@ -1,6 +1,8 @@
 
 #define K25_THROTTLE_PERCENTAGE(x) ( x / 255 ) * 100
 
+typedef float K25_Throttle_Position_t;
+
 enum K25_Heated_Grips_State
 {
     K25_Heated_Grips_State_off  = 0x0F,
@@ -55,6 +57,7 @@ enum K25_ALS_State
 
 typedef struct
 {
+    K25_Throttle_Position_t throttle_position;
     K25_Heated_Grips_State heated_grips;
     K25_Turn_Signals_State turn_signals;
     K25_High_Beam_State high_beam;
