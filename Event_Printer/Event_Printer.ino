@@ -136,7 +136,8 @@ void handle_MSG_ID_Instrument_Cluster_2(unsigned char *data, unsigned char lengt
 void handle_MSG_ID_ABS_Control_Module(unsigned char *data, unsigned char length)
 {
     // BRAKE LEVERS
-    unsigned char value = LO_NIBBLE(data[6]);
+    byte value = LO_NIBBLE(data[6]);
+    motorcycle_state.brake_levers = (K25_Brake_Lever_State)value;
     DEBUG_PRINT("Brake Levers: ");
     if( value == 0x07 ) DEBUG_PRINT("Front");
     else if( value == 0x0B ) DEBUG_PRINT("Rear");
@@ -146,6 +147,7 @@ void handle_MSG_ID_ABS_Control_Module(unsigned char *data, unsigned char length)
 
     // ABS Status
     value = HI_NIBBLE(data[1]);
+    motorcycle_state.abs_system = (K25_ABS_State)value;
     DEBUG_PRINT("ABS: ");
     if( value == 0x05 ) DEBUG_PRINT("ON");
     else if( value == 0x0B ) DEBUG_PRINT("OFF");
@@ -163,7 +165,8 @@ void handle_MSG_ID_BMSK_Control_Module(unsigned char *data, unsigned char length
     DEBUG_PRINT_LN();
 
     // CLUTCH LEVER
-    unsigned char value = LO_NIBBLE(data[4]);
+    byte value = LO_NIBBLE(data[4]);
+    motorcycle_state.clutch = (K25_Clutch_Lever_State)value;
     DEBUG_PRINT("Clutch: ");
     if( value == 0x0A ) DEBUG_PRINT("IN");
     else if( value == 0x06 ) DEBUG_PRINT("OUT");
@@ -174,7 +177,8 @@ void handle_MSG_ID_BMSK_Control_Module(unsigned char *data, unsigned char length
 void handle_MSG_ID_ZFE_Control_Module(unsigned char *data, unsigned char length)
 {
     // HIGH BEAM
-    unsigned char value = LO_NIBBLE(data[6]);
+    byte value = LO_NIBBLE(data[6]);
+    motorcycle_state.high_beam = (K25_High_Beam_State)value;
     DEBUG_PRINT("High beam ");
     if( value == 0x09 ) DEBUG_PRINT("ON");
     else if( value == 0x0A ) DEBUG_PRINT("OFF");
@@ -183,6 +187,7 @@ void handle_MSG_ID_ZFE_Control_Module(unsigned char *data, unsigned char length)
 
     // TURN SIGNAL
     value = data[7];
+    motorcycle_state.turn_signals = (K25_Turn_Signals_State)value;    
     DEBUG_PRINT("Turn Signals ");
     if( value == 0xCF ) DEBUG_PRINT("OFF");
     else if( value == 0xD7 ) DEBUG_PRINT("LEFT ONLY");
@@ -195,7 +200,8 @@ void handle_MSG_ID_ZFE_Control_Module(unsigned char *data, unsigned char length)
 void handle_MSG_ID_ZFE_Control_Module_2(unsigned char *data, unsigned char length)
 {
     // HEATED GRIPS
-    unsigned char value = HI_NIBBLE(data[7]);
+    byte value = HI_NIBBLE(data[7]);
+    motorcycle_state.heated_grips = (K25_Heated_Grips_State)value;    
     DEBUG_PRINT("Heated Grips: ");
     if( value == 0x0F ) DEBUG_PRINT("OFF");
     else if( value == 0x0C ) DEBUG_PRINT("LOW");
@@ -205,6 +211,7 @@ void handle_MSG_ID_ZFE_Control_Module_2(unsigned char *data, unsigned char lengt
 
     // INFO BUTTON
     value = HI_NIBBLE(data[5]);
+    motorcycle_state.info_button = (K25_Info_Button_State)value;
     DEBUG_PRINT("Info Button: ");
     if( value == 0x05 ) DEBUG_PRINT("SHORT PRESS");
     else if( value == 0x06 ) DEBUG_PRINT("LONG PRESS");
