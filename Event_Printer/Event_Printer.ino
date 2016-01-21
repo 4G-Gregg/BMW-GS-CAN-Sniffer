@@ -141,8 +141,8 @@ void handle_MSG_ID_ABS_Control_Module(unsigned char *data, unsigned char length)
 void handle_MSG_ID_BMSK_Control_Module(unsigned char *data, unsigned char length)
 {
     // THROTTLE POSITION
-    unsigned char byte2 = data[1];
-    uint8_t throttlePosition = (byte2 / 255)*100;
+    float byte2 = data[1];
+    float throttlePosition = (byte2 / 255) * 100;
     Serial.print("Throttle Position: ");
     Serial.print(throttlePosition, DEC);
     Serial.println(); 
