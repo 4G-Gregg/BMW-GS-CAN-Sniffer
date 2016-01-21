@@ -53,7 +53,7 @@ enum K25_ALS_State
     K25_ALS_State_light = 0x03
 };
 
-struct K25_State
+typedef struct
 {
     K25_Heated_Grips_State heated_grips;
     K25_Turn_Signals_State turn_signals;
@@ -63,4 +63,4 @@ struct K25_State
     K25_Brake_Lever_State brake_levers;
     K25_ABS_State abs_system;
     K25_ALS_State als;
-};
+} K25_State_t;
