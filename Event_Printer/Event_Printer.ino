@@ -21,6 +21,7 @@
 #endif
 
 MCP_CAN CAN(9);
+K25_State_t motorcycle_state;
 
 /* Arduino Functions */
 void setup()
@@ -122,10 +123,11 @@ void handle_MSG_ID_Instrument_Cluster(unsigned char *data, unsigned char length)
 void handle_MSG_ID_Instrument_Cluster_2(unsigned char *data, unsigned char length)
 {
     // AMBIENT LIGHT SENSOR
-    unsigned char lnibble2 = LO_NIBBLE(data[1]);
+    byte value = LO_NIBBLE(data[1]);
+    motorcycle_state.als = (K25_ALS_State)value;
     DEBUG_PRINT("Ambient Light Sensor ");
-    if( lnibble2 == 0x07 ) DEBUG_PRINT("DARK");
-    else if( lnibble2 == 0x03 ) DEBUG_PRINT("LIGHT");
+    if( value == 0x07 ) DEBUG_PRINT("DARK");
+    else if( value == 0x03 ) DEBUG_PRINT("LIGHT");
     else DEBUG_PRINT("ERROR-Other");
     DEBUG_PRINT_LN("");
 }
@@ -133,19 +135,19 @@ void handle_MSG_ID_Instrument_Cluster_2(unsigned char *data, unsigned char lengt
 void handle_MSG_ID_ABS_Control_Module(unsigned char *data, unsigned char length)
 {
     // BRAKE LEVERS
-    unsigned char lnibble7 = LO_NIBBLE(data[6]);
+    unsigned char value = LO_NIBBLE(data[6]);
     DEBUG_PRINT("Brake Levers: ");
-    if( lnibble7 == 0x07 ) DEBUG_PRINT("Front");
-    else if( lnibble7 == 0x0B ) DEBUG_PRINT("Rear");
-    else if( lnibble7 == 0x03 ) DEBUG_PRINT("None");
+    if( value == 0x07 ) DEBUG_PRINT("Front");
+    else if( value == 0x0B ) DEBUG_PRINT("Rear");
+    else if( value == 0x03 ) DEBUG_PRINT("None");
     else DEBUG_PRINT("ERROR-Other");
     DEBUG_PRINT_LN("");
 
     // ABS Status
-    unsigned char lnibble2 = HI_NIBBLE(data[1]);
+    value = HI_NIBBLE(data[1]);
     DEBUG_PRINT("ABS: ");
-    if( lnibble2 == 0x05 ) DEBUG_PRINT("ON");
-    else if( lnibble2 == 0x0B ) DEBUG_PRINT("OFF");
+    if( value == 0x05 ) DEBUG_PRINT("ON");
+    else if( value == 0x0B ) DEBUG_PRINT("OFF");
     else DEBUG_PRINT("ERROR-Other");
     DEBUG_PRINT_LN("");
 }
@@ -160,10 +162,10 @@ void handle_MSG_ID_BMSK_Control_Module(unsigned char *data, unsigned char length
     DEBUG_PRINT_LN();
 
     // CLUTCH LEVER
-    unsigned char hnibble5 = LO_NIBBLE(data[4]);
+    unsigned char value = LO_NIBBLE(data[4]);
     DEBUG_PRINT("Clutch: ");
-    if( hnibble5 == 0x0A ) DEBUG_PRINT("IN");
-    else if( hnibble5 == 0x06 ) DEBUG_PRINT("OUT");
+    if( value == 0x0A ) DEBUG_PRINT("IN");
+    else if( value == 0x06 ) DEBUG_PRINT("OUT");
     else DEBUG_PRINT("ERROR-Other");
     DEBUG_PRINT_LN("");
 }
@@ -171,20 +173,20 @@ void handle_MSG_ID_BMSK_Control_Module(unsigned char *data, unsigned char length
 void handle_MSG_ID_ZFE_Control_Module(unsigned char *data, unsigned char length)
 {
     // HIGH BEAM
-    unsigned char lnibble7 = LO_NIBBLE(data[6]);
+    unsigned char value = LO_NIBBLE(data[6]);
     DEBUG_PRINT("High beam ");
-    if( lnibble7 == 0x09 ) DEBUG_PRINT("ON");
-    else if( lnibble7 == 0x0A ) DEBUG_PRINT("OFF");
+    if( value == 0x09 ) DEBUG_PRINT("ON");
+    else if( value == 0x0A ) DEBUG_PRINT("OFF");
     else DEBUG_PRINT("ERROR-Other");
     DEBUG_PRINT_LN("");
 
     // TURN SIGNAL
-    unsigned char byte8 = data[7];
+    value = data[7];
     DEBUG_PRINT("Turn Signals ");
-    if( byte8 == 0xCF ) DEBUG_PRINT("OFF");
-    else if( byte8 == 0xD7 ) DEBUG_PRINT("LEFT ONLY");
-    else if( byte8 == 0xE7 ) DEBUG_PRINT("RIGHT ONLY");
-    else if( byte8 == 0xEF ) DEBUG_PRINT("BOTH ON");
+    if( value == 0xCF ) DEBUG_PRINT("OFF");
+    else if( value == 0xD7 ) DEBUG_PRINT("LEFT ONLY");
+    else if( value == 0xE7 ) DEBUG_PRINT("RIGHT ONLY");
+    else if( value == 0xEF ) DEBUG_PRINT("BOTH ON");
     else DEBUG_PRINT("ERROR-Other");
     DEBUG_PRINT_LN("");
 }
@@ -192,19 +194,19 @@ void handle_MSG_ID_ZFE_Control_Module(unsigned char *data, unsigned char length)
 void handle_MSG_ID_ZFE_Control_Module_2(unsigned char *data, unsigned char length)
 {
     // HEATED GRIPS
-    unsigned char hnibble8 = HI_NIBBLE(data[7]);
+    unsigned char value = HI_NIBBLE(data[7]);
     DEBUG_PRINT("Heated Grips: ");
-    if( hnibble8 == 0x0F ) DEBUG_PRINT("OFF");
-    else if( hnibble8 == 0x0C ) DEBUG_PRINT("LOW");
-    else if( hnibble8 == 0x0D ) DEBUG_PRINT("HIGH");
+    if( value == 0x0F ) DEBUG_PRINT("OFF");
+    else if( value == 0x0C ) DEBUG_PRINT("LOW");
+    else if( value == 0x0D ) DEBUG_PRINT("HIGH");
     else DEBUG_PRINT("ERROR-Other");
     DEBUG_PRINT_LN("");
 
     // INFO BUTTON
-    unsigned char hnibble6 = HI_NIBBLE(data[5]);
+    value = HI_NIBBLE(data[5]);
     DEBUG_PRINT("Info Button: ");
-    if( hnibble6 == 0x05 ) DEBUG_PRINT("SHORT PRESS");
-    else if( hnibble6 == 0x06 ) DEBUG_PRINT("LONG PRESS");
+    if( value == 0x05 ) DEBUG_PRINT("SHORT PRESS");
+    else if( value == 0x06 ) DEBUG_PRINT("LONG PRESS");
     else DEBUG_PRINT("ERROR-Other");
     DEBUG_PRINT_LN("");
 }
