@@ -148,7 +148,7 @@ void handle_MSG_ID_BMSK_Control_Module(unsigned char *data, unsigned char length
     Serial.println(); 
 
     // CLUTCH LEVER
-    unsigned char hnibble5 = HI_NIBBLE(data[4]);
+    unsigned char hnibble5 = LO_NIBBLE(data[4]);
     Serial.print("Clutch: ");
     if( hnibble5 == 0x0A ) Serial.print("IN");
     else if( hnibble5 == 0x06 ) Serial.print("OUT");
