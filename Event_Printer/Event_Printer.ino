@@ -128,8 +128,8 @@ void setup_CAN_Bus_Filters()
 
 void process_CAN_Messages()
 {
-    unsigned char length = 0;
-    unsigned char data[8];
+    byte length = 0;
+    byte data[8];
 
      if(CAN_MSGAVAIL == CAN.checkReceive())
      {
@@ -179,19 +179,19 @@ void process_CAN_Messages()
      }
 }
 
-void handle_MSG_ID_Instrument_Cluster(unsigned char *data, unsigned char length)
+void handle_MSG_ID_Instrument_Cluster(byte *data, byte length)
 {
     DEBUG_PRINT("Instrument Cluster: ");
 }
 
-void handle_MSG_ID_Instrument_Cluster_2(unsigned char *data, unsigned char length)
+void handle_MSG_ID_Instrument_Cluster_2(byte *data, byte length)
 {
     // AMBIENT LIGHT SENSOR
     byte value = LO_NIBBLE(data[1]);
     motorcycle_state.als = (K25_ALS_State)value;
 }
 
-void handle_MSG_ID_ABS_Control_Module(unsigned char *data, unsigned char length)
+void handle_MSG_ID_ABS_Control_Module(byte *data, byte length)
 {
     // BRAKE LEVERS
     byte value = LO_NIBBLE(data[6]);
@@ -202,7 +202,7 @@ void handle_MSG_ID_ABS_Control_Module(unsigned char *data, unsigned char length)
     motorcycle_state.abs_system = (K25_ABS_State)value;
 }
 
-void handle_MSG_ID_BMSK_Control_Module(unsigned char *data, unsigned char length)
+void handle_MSG_ID_BMSK_Control_Module(byte *data, byte length)
 {
     // THROTTLE POSITION
     float fvalue = data[1];
@@ -213,7 +213,7 @@ void handle_MSG_ID_BMSK_Control_Module(unsigned char *data, unsigned char length
     motorcycle_state.clutch = (K25_Clutch_Lever_State)value;
 }
 
-void handle_MSG_ID_ZFE_Control_Module(unsigned char *data, unsigned char length)
+void handle_MSG_ID_ZFE_Control_Module(byte *data, byte length)
 {
     // HIGH BEAM
     byte value = LO_NIBBLE(data[6]);
@@ -224,7 +224,7 @@ void handle_MSG_ID_ZFE_Control_Module(unsigned char *data, unsigned char length)
     motorcycle_state.turn_signals = (K25_Turn_Signals_State)value;    
 }
 
-void handle_MSG_ID_ZFE_Control_Module_2(unsigned char *data, unsigned char length)
+void handle_MSG_ID_ZFE_Control_Module_2(byte *data, byte length)
 {
     // HEATED GRIPS
     byte value = HI_NIBBLE(data[7]);
