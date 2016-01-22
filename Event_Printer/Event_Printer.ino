@@ -4,8 +4,8 @@
 #include "BMW_R1200_GS_K25_CAN_Bus_Defines.h"
 #include "BMW_R1200_GS_K25_State.h"
 
-#include <Adafruit_GFX.h>    // Core graphics library
-#include <Adafruit_ST7735.h> // Hardware-specific library
+#include <Adafruit_GFX.h>
+#include <Adafruit_ST7735.h>
 
 /* Compile time Flags */
 #define DEBUG 0
@@ -46,7 +46,6 @@ void setup()
 void loop()
 {
   process_CAN_Messages();
-
   print_status();
 }
 
@@ -54,18 +53,17 @@ void init_display()
 {
   tft.initR(INITR_BLACKTAB);   // initialize a ST7735S chip, black tab
   tft.setRotation(1); // rotate 90 degrees
-
   tft.fillScreen(ST7735_BLACK);
 }
 
 void print_status()
 {
   String text = "";
-  
+
   text += "Throttle: ";
   text += motorcycle_state.throttle_position;
   text += "%\n";
-  
+
   text += "Heated Grips: ";
   if ( motorcycle_state.heated_grips == K25_Heated_Grips_State_off ) text += "OFF";
   else if ( motorcycle_state.heated_grips == K25_Heated_Grips_State_low ) text += "LOW";
