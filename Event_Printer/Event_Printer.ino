@@ -234,3 +234,4 @@ void handle_MSG_ID_ZFE_Control_Module_2(unsigned char *data, unsigned char lengt
     value = HI_NIBBLE(data[5]);
     motorcycle_state.info_button = (K25_Info_Button_State)value;
 }
+
