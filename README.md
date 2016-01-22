@@ -36,6 +36,10 @@ There is a group of people working on reverse engineering the CAN bus messages
 in a [Google Spreadsheet](https://docs.google.com/spreadsheets/d/1tUrOES5fQZa92Robr6uP8v2dzQDq9ohHjUiTU3isqdc/edit#gid=0). I've used this as the basis for my parsing, but have
 found some of the information to be incorrect.
 
+## TFT Display
+One of the more "whiz-bang" features I added was a [TFT display](https://learn.adafruit.com/1-8-tft-display/breakout-assembly) that allows me to see the status of the bike for now.
+I'l be adding a more useful and robust UI when I design exactly what I want this to do.
+
 ## Resources
 - [The Congers CANBusGateway Project](http://development.thecongers.org/home/canbusgateway)
 - [ADVRider CAN Bus Reversing Thread](http://advrider.com/index.php?threads/1200gs-canbus-reversing.1063196/)
