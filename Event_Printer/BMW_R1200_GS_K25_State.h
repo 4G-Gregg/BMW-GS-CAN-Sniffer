@@ -27,7 +27,7 @@ enum K25_High_Beam_State
 enum K25_Info_Button_State
 {
     K25_Info_Button_State_short_press = 0x05,
-    K25_Info_Button_State_long_press = 0x06
+    K25_Info_Button_State_long_press  = 0x06
 };
 
 enum K25_Clutch_Lever_State
