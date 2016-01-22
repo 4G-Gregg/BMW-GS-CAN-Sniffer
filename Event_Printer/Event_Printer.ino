@@ -140,12 +140,12 @@ void draw_text(String *text, uint16_t color) {
 void setup_CAN_Bus_Filters()
 {
   while (CAN_OK != CAN.begin(CAN_500KBPS)) {
-    Serial.println("Failed to initialize CAN");
-    Serial.println("Retrying..");
+    DEBUG_PRINT_LN("Failed to initialize CAN");
+    DEBUG_PRINT_LN("Retrying..");
     delay(100);
   }
 
-  Serial.println("Starting to initialize CAN");
+  DEBUG_PRINT_LN("Starting to initialize CAN");
 
   // Set filter masks
   CAN.init_Mask(0, 0, 0xfff);
