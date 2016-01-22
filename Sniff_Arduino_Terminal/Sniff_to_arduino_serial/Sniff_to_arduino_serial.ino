@@ -16,18 +16,26 @@ START_INIT:
     }
 
     Serial.println("Starting to initialize CAN");
-   
+
     //Set filter masks
     CAN.init_Mask(0, 0, 0xfff);
     CAN.init_Mask(1, 0, 0xfff);
 
     //Set filters
+    // Look for button presses
+    CAN.init_Filt(0, 0, 0x2D0); // ZFE
+    CAN.init_Filt(1, 0, 0x294); // ABS
+    CAN.init_Filt(2, 0, 0x130); // ZFE 2
+    /*
     CAN.init_Filt(0, 0, 0x10C);
     CAN.init_Filt(1, 0, 0x130);
     CAN.init_Filt(2, 0, 0x294);
     CAN.init_Filt(3, 0, 0x2BC);
     CAN.init_Filt(4, 0, 0x2D0);
     CAN.init_Filt(5, 0, 0x3F8);
+    CAN.init_Filt(6, 0, 0x2A8);
+    CAN.init_Filt(7, 0, 0x3FF);
+    */
     Serial.println("CAN Initialized");
 }
 
