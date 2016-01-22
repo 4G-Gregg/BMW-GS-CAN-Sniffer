@@ -4,9 +4,13 @@
 #include "BMW_R1200_GS_K25_CAN_Bus_Defines.h"
 #include "BMW_R1200_GS_K25_State.h"
 
+#include <Adafruit_GFX.h>    // Core graphics library
+#include <Adafruit_ST7735.h> // Hardware-specific library
+
 /* Compile time Flags */
 #define DEBUG 0
-#define PRINT_TO_SERIAL_CONSOLE 1
+#define PRINT_TO_SERIAL_CONSOLE 0
+#define PRINT_TO_TFT 1
 
 /* Helper Macros */
 #define HI_NIBBLE(b) (((b) >> 4) & 0x0F)
@@ -21,109 +25,143 @@
     #define DEBUG_PRINT_LN(...)
 #endif
 
+/* TFT Pin Defines */
+#define TFT_CS     10
+#define TFT_RST    9
+#define TFT_DC     8
+
 /* Globals */
 MCP_CAN CAN(9);
 K25_State_t motorcycle_state;
+Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS,  TFT_DC, TFT_RST);
 
 /* Arduino Functions */
 void setup()
 {
-    Serial.begin(115200);
-    setup_CAN_Bus_Filters();
+  Serial.begin(115200);
+  setup_CAN_Bus_Filters();
+  init_display();
 }
 
 void loop()
 {
-    process_CAN_Messages();
+  process_CAN_Messages();
+
+  print_status();
+}
+
+void init_display()
+{
+  tft.initR(INITR_BLACKTAB);   // initialize a ST7735S chip, black tab
+  tft.setRotation(1); // rotate 90 degrees
+
+  tft.fillScreen(ST7735_BLACK);
+}
+
+void print_status()
+{
+  String text = "";
+  
+  text += "Throttle: ";
+  text += motorcycle_state.throttle_position;
+  text += "%\n";
+  
+  text += "Heated Grips: ";
+  if ( motorcycle_state.heated_grips == K25_Heated_Grips_State_off ) text += "OFF";
+  else if ( motorcycle_state.heated_grips == K25_Heated_Grips_State_low ) text += "LOW";
+  else if ( motorcycle_state.heated_grips == K25_Heated_Grips_State_high ) text += "HIGH";
+  else text += "Unknown";
+  text += "\n";
+
+  text += "Turn Signals: ";
+  if ( motorcycle_state.turn_signals == K25_Turn_Signals_State_off ) text += "OFF";
+  else if ( motorcycle_state.turn_signals == K25_Turn_Signals_State_left ) text += "LEFT";
+  else if ( motorcycle_state.turn_signals == K25_Turn_Signals_State_right ) text += "RIGHT";
+  else if ( motorcycle_state.turn_signals == K25_Turn_Signals_State_both ) text += "HAZARDS";
+  else text += "Unknown";
+  text += "\n";
+
+  text += "High Beam: ";
+  if ( motorcycle_state.high_beam == K25_High_Beam_State_off ) text += "OFF";
+  else if ( motorcycle_state.high_beam == K25_High_Beam_State_on ) text += "ON";
+  else text += "Unknown";
+  text += "\n";
+
+  /* INFO BUTTON CURRENTLY NOT WORKING
+  text += "Info Button: ";
+  if ( motorcycle_state.info_button == K25_Info_Button_State_short_press ) text += "SHORT";
+  else if ( motorcycle_state.info_button == K25_Info_Button_State_long_press ) text += "LONG";
+  else text += "Unknown";
+  text += "\n";
+  */
+
+  text += "Clutch: ";
+  if ( motorcycle_state.clutch == K25_Clutch_Lever_State_out ) text += "OUT";
+  else if ( motorcycle_state.clutch == K25_Clutch_Lever_State_in ) text += "IN";
+  else text += "Unknown";
+  text += "\n";
+
+  text += "Brakes: ";
+  if ( motorcycle_state.brake_levers == K25_Brake_Lever_State_none ) text += "NONE";
+  else if ( motorcycle_state.brake_levers == K25_Brake_Lever_State_front ) text += "FRONT";
+  else if ( motorcycle_state.brake_levers == K25_Brake_Lever_State_rear ) text += "REAR";
+  else text += "Unknown";
+  text += "\n";
+
+  text += "ABS: ";
+  if ( motorcycle_state.abs_system == K25_ABS_State_off ) text += "OFF";
+  else if ( motorcycle_state.abs_system == K25_ABS_State_on ) text += "ON";
+  else text += "Unknown";
+  text += "\n";
+
+  text += "ALS: ";
+  if ( motorcycle_state.als == K25_ALS_State_dark ) text += "DARK";
+  else if ( motorcycle_state.als == K25_ALS_State_light ) text += "LIGHT";
+  else text += "Unknown";
+  text += "\n";
+
 #if PRINT_TO_SERIAL_CONSOLE
-    print_motorcycle_state();
+  Serial.println(text);
+#endif
+
+#if PRINT_TO_TFT
+  tft.fillScreen(ST7735_BLACK);
+  draw_text(&text, ST7735_WHITE);
 #endif
 }
 
-void print_motorcycle_state()
-{
-    Serial.print("Throttle Position: ");
-    Serial.print(motorcycle_state.throttle_position, DEC);
-    Serial.println();
-
-    Serial.print("Heated Grips: ");
-    if( motorcycle_state.heated_grips == K25_Heated_Grips_State_off ) Serial.print("OFF");
-    else if( motorcycle_state.heated_grips == K25_Heated_Grips_State_low ) Serial.print("LOW");
-    else if( motorcycle_state.heated_grips == K25_Heated_Grips_State_high ) Serial.print("HIGH");
-    else Serial.print("Unknown");
-    Serial.println();
-
-    Serial.print("Turn Signals: ");
-    if( motorcycle_state.turn_signals == K25_Turn_Signals_State_off ) Serial.print("OFF");
-    else if( motorcycle_state.turn_signals == K25_Turn_Signals_State_left ) Serial.print("LEFT");
-    else if( motorcycle_state.turn_signals == K25_Turn_Signals_State_right ) Serial.print("RIGHT");
-    else if( motorcycle_state.turn_signals == K25_Turn_Signals_State_both ) Serial.print("HAZARDS");
-    else Serial.print("Unknown");
-    Serial.println();
-
-    Serial.print("High Beam: ");
-    if( motorcycle_state.high_beam == K25_High_Beam_State_off ) Serial.print("OFF");
-    else if( motorcycle_state.high_beam == K25_High_Beam_State_on ) Serial.print("ON");
-    else Serial.print("Unknown");
-    Serial.println();
-
-    Serial.print("Info Button: ");
-    if( motorcycle_state.info_button == K25_Info_Button_State_short_press ) Serial.print("SHORT");
-    else if( motorcycle_state.info_button == K25_Info_Button_State_long_press ) Serial.print("LONG");
-    else Serial.print("Unknown");
-    Serial.println();
-
-    Serial.print("Clutch: ");
-    if( motorcycle_state.clutch == K25_Clutch_Lever_State_out ) Serial.print("OUT");
-    else if( motorcycle_state.clutch == K25_Clutch_Lever_State_in ) Serial.print("IN");
-    else Serial.print("Unknown");
-    Serial.println();
-
-    Serial.print("Brakes: ");
-    if( motorcycle_state.brake_levers == K25_Brake_Lever_State_none ) Serial.print("NONE");
-    else if( motorcycle_state.brake_levers == K25_Brake_Lever_State_front ) Serial.print("FRONT");
-    else if( motorcycle_state.brake_levers == K25_Brake_Lever_State_rear ) Serial.print("REAR");
-    else Serial.print("Unknown");
-    Serial.println();
-
-    Serial.print("ABS: ");
-    if( motorcycle_state.abs_system == K25_ABS_State_off ) Serial.print("OFF");
-    else if( motorcycle_state.abs_system == K25_ABS_State_on ) Serial.print("ON");
-    else Serial.print("Unknown");
-    Serial.println();
-
-    Serial.print("ALS: ");
-    if( motorcycle_state.als == K25_ALS_State_dark ) Serial.print("DARK");
-    else if( motorcycle_state.als == K25_ALS_State_light ) Serial.print("LIGHT");
-    else Serial.print("Unknown");
-    Serial.println();
+void draw_text(String *text, uint16_t color) {
+  tft.setCursor(0, 0);
+  tft.setTextColor(color);
+  tft.setTextWrap(true);
+  tft.print(text->c_str());
 }
 
 void setup_CAN_Bus_Filters()
 {
-    while(CAN_OK != CAN.begin(CAN_500KBPS)){
-        Serial.println("Failed to initialize CAN");
-        Serial.println("Retrying..");
-        delay(100);
-    }
+  while (CAN_OK != CAN.begin(CAN_500KBPS)) {
+    Serial.println("Failed to initialize CAN");
+    Serial.println("Retrying..");
+    delay(100);
+  }
 
-    Serial.println("Starting to initialize CAN");
+  Serial.println("Starting to initialize CAN");
 
-    // Set filter masks
-    CAN.init_Mask(0, 0, 0xfff);
-    CAN.init_Mask(1, 0, 0xfff);
+  // Set filter masks
+  CAN.init_Mask(0, 0, 0xfff);
+  CAN.init_Mask(1, 0, 0xfff);
 
-    // Set filters
-    CAN.init_Filt(0, 0, MSG_ID_BMSK_Control_Module);
-    CAN.init_Filt(1, 0, MSG_ID_BMSK_Control_Module_2);
-    CAN.init_Filt(2, 0, MSG_ID_ZFE_Control_Module);
-    CAN.init_Filt(3, 0, MSG_ID_ZFE_Control_Module_2);
-    CAN.init_Filt(4, 0, MSG_ID_ABS_Control_Module);
-    CAN.init_Filt(5, 0, MSG_ID_ABS_Control_Module_2);
-    CAN.init_Filt(6, 0, MSG_ID_Instrument_Cluster);
-    CAN.init_Filt(7, 0, MSG_ID_Instrument_Cluster_2);
+  // Set filters
+  CAN.init_Filt(0, 0, MSG_ID_BMSK_Control_Module);
+  CAN.init_Filt(1, 0, MSG_ID_BMSK_Control_Module_2);
+  CAN.init_Filt(2, 0, MSG_ID_ZFE_Control_Module);
+  CAN.init_Filt(3, 0, MSG_ID_ZFE_Control_Module_2);
+  CAN.init_Filt(4, 0, MSG_ID_ABS_Control_Module);
+  CAN.init_Filt(5, 0, MSG_ID_ABS_Control_Module_2);
+  CAN.init_Filt(6, 0, MSG_ID_Instrument_Cluster);
+  CAN.init_Filt(7, 0, MSG_ID_Instrument_Cluster_2);
 
-    Serial.println("CAN Initialized");
+  Serial.println("CAN Initialized");
 }
 
 void process_CAN_Messages()
