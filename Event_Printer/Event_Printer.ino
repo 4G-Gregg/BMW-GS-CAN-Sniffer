@@ -39,7 +39,7 @@ Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS,  TFT_DC, TFT_RST);
 void setup()
 {
   Serial.begin(115200);
-  setup_CAN_Bus_Filters();
+  init_CAN_bus();
   init_display();
 }
 
@@ -56,86 +56,7 @@ void init_display()
   tft.fillScreen(ST7735_BLACK);
 }
 
-void print_status()
-{
-  String text = "";
-
-  text += "Throttle: ";
-  text += motorcycle_state.throttle_position;
-  text += "%\n";
-
-  text += "Heated Grips: ";
-  if ( motorcycle_state.heated_grips == K25_Heated_Grips_State_off ) text += "OFF";
-  else if ( motorcycle_state.heated_grips == K25_Heated_Grips_State_low ) text += "LOW";
-  else if ( motorcycle_state.heated_grips == K25_Heated_Grips_State_high ) text += "HIGH";
-  else text += "Unknown";
-  text += "\n";
-
-  text += "Turn Signals: ";
-  if ( motorcycle_state.turn_signals == K25_Turn_Signals_State_off ) text += "OFF";
-  else if ( motorcycle_state.turn_signals == K25_Turn_Signals_State_left ) text += "LEFT";
-  else if ( motorcycle_state.turn_signals == K25_Turn_Signals_State_right ) text += "RIGHT";
-  else if ( motorcycle_state.turn_signals == K25_Turn_Signals_State_both ) text += "HAZARDS";
-  else text += "Unknown";
-  text += "\n";
-
-  text += "High Beam: ";
-  if ( motorcycle_state.high_beam == K25_High_Beam_State_off ) text += "OFF";
-  else if ( motorcycle_state.high_beam == K25_High_Beam_State_on ) text += "ON";
-  else text += "Unknown";
-  text += "\n";
-
-  /* INFO BUTTON CURRENTLY NOT WORKING
-  text += "Info Button: ";
-  if ( motorcycle_state.info_button == K25_Info_Button_State_short_press ) text += "SHORT";
-  else if ( motorcycle_state.info_button == K25_Info_Button_State_long_press ) text += "LONG";
-  else text += "Unknown";
-  text += "\n";
-  */
-
-  text += "Clutch: ";
-  if ( motorcycle_state.clutch == K25_Clutch_Lever_State_out ) text += "OUT";
-  else if ( motorcycle_state.clutch == K25_Clutch_Lever_State_in ) text += "IN";
-  else text += "Unknown";
-  text += "\n";
-
-  text += "Brakes: ";
-  if ( motorcycle_state.brake_levers == K25_Brake_Lever_State_none ) text += "NONE";
-  else if ( motorcycle_state.brake_levers == K25_Brake_Lever_State_front ) text += "FRONT";
-  else if ( motorcycle_state.brake_levers == K25_Brake_Lever_State_rear ) text += "REAR";
-  else text += "Unknown";
-  text += "\n";
-
-  text += "ABS: ";
-  if ( motorcycle_state.abs_system == K25_ABS_State_off ) text += "OFF";
-  else if ( motorcycle_state.abs_system == K25_ABS_State_on ) text += "ON";
-  else text += "Unknown";
-  text += "\n";
-
-  text += "ALS: ";
-  if ( motorcycle_state.als == K25_ALS_State_dark ) text += "DARK";
-  else if ( motorcycle_state.als == K25_ALS_State_light ) text += "LIGHT";
-  else text += "Unknown";
-  text += "\n";
-
-#if PRINT_TO_SERIAL_CONSOLE
-  Serial.println(text);
-#endif
-
-#if PRINT_TO_TFT
-  tft.fillScreen(ST7735_BLACK);
-  draw_text(&text, ST7735_WHITE);
-#endif
-}
-
-void draw_text(String *text, uint16_t color) {
-  tft.setCursor(0, 0);
-  tft.setTextColor(color);
-  tft.setTextWrap(true);
-  tft.print(text->c_str());
-}
-
-void setup_CAN_Bus_Filters()
+void init_CAN_bus()
 {
   while (CAN_OK != CAN.begin(CAN_500KBPS)) {
     DEBUG_PRINT_LN("Failed to initialize CAN");
@@ -217,4 +138,83 @@ void process_CAN_Messages()
           } break;
         }
      }
+}
+
+void print_status()
+{
+  String text = "";
+
+  text += "Throttle: ";
+  text += motorcycle_state.throttle_position;
+  text += "%\n";
+
+  text += "Heated Grips: ";
+  if ( motorcycle_state.heated_grips == K25_Heated_Grips_State_off ) text += "OFF";
+  else if ( motorcycle_state.heated_grips == K25_Heated_Grips_State_low ) text += "LOW";
+  else if ( motorcycle_state.heated_grips == K25_Heated_Grips_State_high ) text += "HIGH";
+  else text += "Unknown";
+  text += "\n";
+
+  text += "Turn Signals: ";
+  if ( motorcycle_state.turn_signals == K25_Turn_Signals_State_off ) text += "OFF";
+  else if ( motorcycle_state.turn_signals == K25_Turn_Signals_State_left ) text += "LEFT";
+  else if ( motorcycle_state.turn_signals == K25_Turn_Signals_State_right ) text += "RIGHT";
+  else if ( motorcycle_state.turn_signals == K25_Turn_Signals_State_both ) text += "HAZARDS";
+  else text += "Unknown";
+  text += "\n";
+
+  text += "High Beam: ";
+  if ( motorcycle_state.high_beam == K25_High_Beam_State_off ) text += "OFF";
+  else if ( motorcycle_state.high_beam == K25_High_Beam_State_on ) text += "ON";
+  else text += "Unknown";
+  text += "\n";
+
+  /* INFO BUTTON CURRENTLY NOT WORKING
+  text += "Info Button: ";
+  if ( motorcycle_state.info_button == K25_Info_Button_State_short_press ) text += "SHORT";
+  else if ( motorcycle_state.info_button == K25_Info_Button_State_long_press ) text += "LONG";
+  else text += "Unknown";
+  text += "\n";
+  */
+
+  text += "Clutch: ";
+  if ( motorcycle_state.clutch == K25_Clutch_Lever_State_out ) text += "OUT";
+  else if ( motorcycle_state.clutch == K25_Clutch_Lever_State_in ) text += "IN";
+  else text += "Unknown";
+  text += "\n";
+
+  text += "Brakes: ";
+  if ( motorcycle_state.brake_levers == K25_Brake_Lever_State_none ) text += "NONE";
+  else if ( motorcycle_state.brake_levers == K25_Brake_Lever_State_front ) text += "FRONT";
+  else if ( motorcycle_state.brake_levers == K25_Brake_Lever_State_rear ) text += "REAR";
+  else text += "Unknown";
+  text += "\n";
+
+  text += "ABS: ";
+  if ( motorcycle_state.abs_system == K25_ABS_State_off ) text += "OFF";
+  else if ( motorcycle_state.abs_system == K25_ABS_State_on ) text += "ON";
+  else text += "Unknown";
+  text += "\n";
+
+  text += "ALS: ";
+  if ( motorcycle_state.als == K25_ALS_State_dark ) text += "DARK";
+  else if ( motorcycle_state.als == K25_ALS_State_light ) text += "LIGHT";
+  else text += "Unknown";
+  text += "\n";
+
+#if PRINT_TO_SERIAL_CONSOLE
+  Serial.println(text);
+#endif
+
+#if PRINT_TO_TFT
+  tft.fillScreen(ST7735_BLACK);
+  draw_text(&text, ST7735_WHITE);
+#endif
+}
+
+void draw_text(String *text, uint16_t color) {
+  tft.setCursor(0, 0);
+  tft.setTextColor(color);
+  tft.setTextWrap(true);
+  tft.print(text->c_str());
 }
