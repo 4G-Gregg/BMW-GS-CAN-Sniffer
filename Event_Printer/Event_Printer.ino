@@ -51,6 +51,7 @@ void loop()
   print_status();
 }
 
+/* Init Helpers */
 void init_display()
 {
   tft.initR(INITR_BLACKTAB);   // initialize a ST7735S chip, black tab
@@ -85,6 +86,7 @@ void init_CAN_bus()
   Serial.println("CAN Initialized");
 }
 
+/* Event Processors */
 void process_CAN_Messages()
 {
     byte length = 0;
@@ -142,6 +144,7 @@ void process_CAN_Messages()
      }
 }
 
+/* Print Functions */
 void print_status()
 {
   String text = "";
