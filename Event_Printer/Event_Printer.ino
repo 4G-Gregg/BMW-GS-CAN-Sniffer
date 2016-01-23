@@ -206,14 +206,14 @@ void print_status()
 
   text += "Throttle: ";
   text += motorcycle_state.throttle_position;
-  text += "%\n";
+  text += "%        \n";
 
   text += "Heated Grips: ";
   if ( motorcycle_state.heated_grips == K25_Heated_Grips_State_off ) text += "OFF";
   else if ( motorcycle_state.heated_grips == K25_Heated_Grips_State_low ) text += "LOW";
   else if ( motorcycle_state.heated_grips == K25_Heated_Grips_State_high ) text += "HIGH";
   else text += "Unknown";
-  text += "\n";
+  text += "    \n";
 
   text += "Turn Signals: ";
   if ( motorcycle_state.turn_signals == K25_Turn_Signals_State_off ) text += "OFF";
@@ -221,13 +221,13 @@ void print_status()
   else if ( motorcycle_state.turn_signals == K25_Turn_Signals_State_right ) text += "RIGHT";
   else if ( motorcycle_state.turn_signals == K25_Turn_Signals_State_both ) text += "HAZARDS";
   else text += "Unknown";
-  text += "\n";
+  text += "    \n";
 
   text += "High Beam: ";
   if ( motorcycle_state.high_beam == K25_High_Beam_State_off ) text += "OFF";
   else if ( motorcycle_state.high_beam == K25_High_Beam_State_on ) text += "ON";
   else text += "Unknown";
-  text += "\n";
+  text += "       \n";
 
   /* INFO BUTTON CURRENTLY NOT WORKING
   text += "Info Button: ";
@@ -241,26 +241,26 @@ void print_status()
   if ( motorcycle_state.clutch == K25_Clutch_Lever_State_out ) text += "OUT";
   else if ( motorcycle_state.clutch == K25_Clutch_Lever_State_in ) text += "IN";
   else text += "Unknown";
-  text += "\n";
+  text += "       \n";
 
   text += "Brakes: ";
   if ( motorcycle_state.brake_levers == K25_Brake_Lever_State_none ) text += "NONE";
   else if ( motorcycle_state.brake_levers == K25_Brake_Lever_State_front ) text += "FRONT";
   else if ( motorcycle_state.brake_levers == K25_Brake_Lever_State_rear ) text += "REAR";
   else text += "Unknown";
-  text += "\n";
+  text += "       \n";
 
   text += "ABS: ";
   if ( motorcycle_state.abs_system == K25_ABS_State_off ) text += "OFF";
   else if ( motorcycle_state.abs_system == K25_ABS_State_on ) text += "ON";
   else text += "Unknown";
-  text += "\n";
+  text += "       \n";
 
   text += "ALS: ";
   if ( motorcycle_state.als == K25_ALS_State_dark ) text += "DARK";
   else if ( motorcycle_state.als == K25_ALS_State_light ) text += "LIGHT";
   else text += "Unknown";
-  text += "\n";
+  text += "       \n";
 
 #if PRINT_STATUS_TO_SERIAL_CONSOLE
   Serial.println(text);
@@ -274,6 +274,6 @@ void print_status()
 void draw_text(String *text, uint16_t color, uint16_t background_color) {
   tft.setCursor(0, 0);
   tft.setTextColor(color, background_color);
-  tft.setTextWrap(false);
+  tft.setTextWrap(true);
   tft.print(text->c_str());
 }
