@@ -36,6 +36,7 @@
 MCP_CAN CAN(9);
 K25_State_t motorcycle_state;
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS,  TFT_DC, TFT_RST);
+bool status_changed = true;
 
 /* Arduino Functions */
 void setup()
@@ -48,7 +49,11 @@ void setup()
 void loop()
 {
   process_CAN_Messages();
-  print_status();
+  if (status_changed)
+  {
+      print_status();
+      status_changed = false;
+  }
 }
 
 /* Init Helpers */
@@ -91,6 +96,7 @@ void process_CAN_Messages()
 {
     byte length = 0;
     byte data[8];
+    byte new_value = 0;
 
      if(CAN_MSGAVAIL == CAN.checkReceive())
      {
@@ -99,8 +105,19 @@ void process_CAN_Messages()
         {
           case MSG_ID_BMSK_Control_Module:
           {
-            motorcycle_state.throttle_position = (K25_Throttle_Position_t)K25_THROTTLE_PERCENTAGE(data[1]);
-            motorcycle_state.clutch = (K25_Clutch_Lever_State)LO_NIBBLE(data[4]);
+            new_value = K25_THROTTLE_PERCENTAGE(data[1]);
+            if ( new_value != motorcycle_state.throttle_position )
+            {
+                status_changed = true;
+                motorcycle_state.throttle_position = (K25_Throttle_Position_t)new_value;
+            }
+
+            new_value = LO_NIBBLE(data[4]);
+            if ( new_value != motorcycle_state.clutch )
+            {
+                status_changed = true;
+                motorcycle_state.clutch = (K25_Clutch_Lever_State)new_value;
+            }
           } break;
 
           case MSG_ID_BMSK_Control_Module_2:
@@ -110,20 +127,53 @@ void process_CAN_Messages()
 
           case MSG_ID_ZFE_Control_Module:
           {
-            motorcycle_state.high_beam = (K25_High_Beam_State)LO_NIBBLE(data[6]);
-            motorcycle_state.turn_signals = (K25_Turn_Signals_State)data[7];
+              new_value = LO_NIBBLE(data[6]);
+              if ( new_value != motorcycle_state.high_beam )
+              {
+                  status_changed = true;
+                  motorcycle_state.high_beam = (K25_High_Beam_State)new_value;
+              }
+
+              new_value = data[7];
+              if ( new_value != motorcycle_state.turn_signals )
+              {
+                  status_changed = true;
+                  motorcycle_state.turn_signals = (K25_Turn_Signals_State)new_value;
+              }
           } break;
 
           case MSG_ID_ZFE_Control_Module_2:
           {
-              motorcycle_state.heated_grips = (K25_Heated_Grips_State)HI_NIBBLE(data[7]);
-              motorcycle_state.info_button = (K25_Info_Button_State)HI_NIBBLE(data[5]);
+              new_value = HI_NIBBLE(data[7]);
+              if ( new_value != motorcycle_state.heated_grips )
+              {
+                  status_changed = true;
+                  motorcycle_state.heated_grips = (K25_Heated_Grips_State)new_value;
+              }
+
+              new_value = HI_NIBBLE(data[5]);
+              if ( new_value != motorcycle_state.info_button )
+              {
+                  status_changed = true;
+                  motorcycle_state.info_button = (K25_Info_Button_State)new_value;
+              }
           } break;
 
           case MSG_ID_ABS_Control_Module:
           {
-            motorcycle_state.brake_levers = (K25_Brake_Lever_State)LO_NIBBLE(data[6]);
-            motorcycle_state.abs_system = (K25_ABS_State)HI_NIBBLE(data[1]);
+              new_value = LO_NIBBLE(data[6]);
+              if ( new_value != motorcycle_state.brake_levers )
+              {
+                  status_changed = true;
+                  motorcycle_state.brake_levers = (K25_Brake_Lever_State)new_value;
+              }
+
+              new_value = HI_NIBBLE(data[1]);
+              if ( new_value != motorcycle_state.abs_system )
+              {
+                  status_changed = true;
+                  motorcycle_state.abs_system = (K25_ABS_State)new_value;
+              }
           } break;
 
           case MSG_ID_ABS_Control_Module_2:
@@ -138,7 +188,12 @@ void process_CAN_Messages()
 
           case MSG_ID_Instrument_Cluster_2:
           {
-            motorcycle_state.als = (K25_ALS_State)LO_NIBBLE(data[1]);
+              new_value = LO_NIBBLE(data[1]);
+              if ( new_value != motorcycle_state.als )
+              {
+                  status_changed = true;
+                  motorcycle_state.als = (K25_ALS_State)new_value;
+              }
           } break;
         }
      }
