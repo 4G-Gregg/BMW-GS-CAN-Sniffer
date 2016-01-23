@@ -26,23 +26,27 @@ The extremely overpriced BMW repair plug and wiring harness can be [purchased he
 - 5: CAN Low
 - 6: CAN High
 
-## Options for driving the heated jacket load
-1. [10A Motor Driver, Solid State Relay](https://www.dimensionengineering.com/products/syren10)
-1. [10A 60V Solid State Relay](http://www.allelectronics.com/make-a-store/item/srly-610/10a-60vdc-solid-state-relay/1.html)
-
-## Prototype Case for Arduino with the CAN Bus Shield
-[The Congers CANBusGateway Project](http://development.thecongers.org/home/canbusgateway) had a case design that I modified slightly to use the CAN Bus screw down connections instead of the DB9 connector. Those files are included [in this repo](Mechanicals/).
-
-![3D Printed Prototype Case](http://i.imgur.com/rbw4ONJ.jpg)
-
 ## Protocol Parsing
 There is a group of people working on reverse engineering the CAN bus messages
 in a [Google Spreadsheet](https://docs.google.com/spreadsheets/d/1tUrOES5fQZa92Robr6uP8v2dzQDq9ohHjUiTU3isqdc/edit#gid=0). I've used this as the basis for my parsing, but have
 found some of the information to be incorrect.
 
 ## TFT Display
-One of the more "whiz-bang" features I added was a [TFT display](https://learn.adafruit.com/1-8-tft-display/breakout-assembly) that allows me to see the status of the bike for now.
-I'l be adding a more useful and robust UI when I design exactly what I want this to do.
+One of the more "whiz-bang" features I added was a [TFT display](https://learn.adafruit.com/1-8-tft-display/breakout-assembly) that allows me to see the status of the bike without staring at the computer screen. It most likely won't be used in the final implementation but I thought it was a cool demo.
+
+## Prototype Case for Arduino with the CAN Bus Shield
+[The Congers CANBusGateway Project](http://development.thecongers.org/home/canbusgateway) had a case design that I modified slightly to use the CAN Bus screw down connections instead of the DB9 connector. Those files are included [in this repo](Mechanicals/).
+
+![3D Printed Prototype Case](http://i.imgur.com/rbw4ONJ.jpg)
+
+## Interfacing With Accessories
+
+### Options for driving the heated jacket load
+1. [10A Motor Driver, Solid State Relay](https://www.dimensionengineering.com/products/syren10)
+1. [10A 60V Solid State Relay](http://www.allelectronics.com/make-a-store/item/srly-610/10a-60vdc-solid-state-relay/1.html)
+
+### Options for driving the LED Aux Lights
+TBD
 
 ## Resources
 - [The Congers CANBusGateway Project](http://development.thecongers.org/home/canbusgateway)
