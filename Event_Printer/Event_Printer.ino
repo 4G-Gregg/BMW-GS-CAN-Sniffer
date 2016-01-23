@@ -105,12 +105,14 @@ void process_CAN_Messages()
         {
           case MSG_ID_BMSK_Control_Module:
           {
-            new_value = K25_THROTTLE_PERCENTAGE(data[1]);
-            if ( new_value != motorcycle_state.throttle_position )
+              /*
+            float new_throttle = K25_THROTTLE_PERCENTAGE(data[1]);
+            if ( new_throttle != motorcycle_state.throttle_position )
             {
                 status_changed = true;
-                motorcycle_state.throttle_position = (K25_Throttle_Position_t)new_value;
+                motorcycle_state.throttle_position = (K25_Throttle_Position_t)new_throttle;
             }
+            */
 
             new_value = LO_NIBBLE(data[4]);
             if ( new_value != motorcycle_state.clutch )
