@@ -212,14 +212,13 @@ void print_status()
 #endif
 
 #if PRINT_STATUS_TO_TFT
-  tft.fillScreen(ST7735_BLACK);
-  draw_text(&text, ST7735_WHITE);
+  draw_text(&text, ST7735_WHITE, ST7735_BLACK);
 #endif
 }
 
-void draw_text(String *text, uint16_t color) {
+void draw_text(String *text, uint16_t color, uint16_t background_color) {
   tft.setCursor(0, 0);
-  tft.setTextColor(color);
-  tft.setTextWrap(true);
+  tft.setTextColor(color, background_color);
+  tft.setTextWrap(false);
   tft.print(text->c_str());
 }
