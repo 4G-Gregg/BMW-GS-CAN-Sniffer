@@ -11,8 +11,8 @@
 
 /* Compile time Flags */
 #define DEBUG 0
-#define PRINT_TO_SERIAL_CONSOLE 0
-#define PRINT_TO_TFT 1
+#define PRINT_STATUS_TO_SERIAL_CONSOLE 0
+#define PRINT_STATUS_TO_TFT 1
 
 /* Helper Macros */
 #define HI_NIBBLE(b) (((b) >> 4) & 0x0F)
@@ -207,11 +207,11 @@ void print_status()
   else text += "Unknown";
   text += "\n";
 
-#if PRINT_TO_SERIAL_CONSOLE
+#if PRINT_STATUS_TO_SERIAL_CONSOLE
   Serial.println(text);
 #endif
 
-#if PRINT_TO_TFT
+#if PRINT_STATUS_TO_TFT
   tft.fillScreen(ST7735_BLACK);
   draw_text(&text, ST7735_WHITE);
 #endif
