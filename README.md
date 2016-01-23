@@ -4,7 +4,7 @@
 Create a device capable of sniffing the CAN Bus of a 2010 BMW R1200 GS motorcycle. This will be accomplished using an Arduino and CAN Bus shield and appending the sniffer to the motorcycle's CAN Bus.
 
 ## Current Demo
-![CAN Bus YouTube Demo](http://j.gifs.com/8235g5.gif)<br>
+![CAN Bus YouTube Demo](https://j.gifs.com/2k85pM.gif)<br>
 [Full Video on YouTube](https://youtu.be/-c5wJQV1saM)
 
 ## Applications
