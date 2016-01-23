@@ -44,6 +44,9 @@ void loop(){
     unsigned char length = 0;
     unsigned char data[8];
 
+    // Print in CSV format
+    Serial.println("CAN-ID, b0, b1, b2, b3, b4, b5, b6, b7");
+    Serial.println();
     if(CAN_MSGAVAIL == CAN.checkReceive()){
         CAN.readMsgBuf(&length, data);
         Serial.print(CAN.getCanId(),HEX);
@@ -52,6 +55,6 @@ void loop(){
             if( data[i] < 0x10){ Serial.print("0");}
             Serial.print(data[i], HEX);
         }
-        Serial.print(";");
+        Serial.println("");
     }
 }
