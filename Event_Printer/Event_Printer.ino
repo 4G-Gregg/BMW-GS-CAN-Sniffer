@@ -55,7 +55,7 @@ void loop()
 void init_display()
 {
   tft.initR(INITR_BLACKTAB);   // initialize a ST7735S chip, black tab
-  tft.setRotation(1); // rotate 90 degrees
+  tft.setRotation(3); // rotate 90 degrees
   tft.fillScreen(ST7735_BLACK);
 }
 
