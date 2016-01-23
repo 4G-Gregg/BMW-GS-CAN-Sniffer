@@ -7,6 +7,20 @@ Create a device capable of sniffing the CAN Bus of a 2010 BMW R1200 GS motorcycl
 ![CAN Bus YouTube Demo](http://j.gifs.com/8235g5.gif)<br>
 [Full Video on YouTube](https://youtu.be/-c5wJQV1saM)
 
+## Applications
+### Accessory_Controller
+This will be the main application for driving the LED auxiliary
+light and heated jacket implementation.
+
+### Event_Printer
+Prints out all known events to either the TFT display or the
+serial terminal. This is mostly used for debugging, demos, and
+new message discovery.
+
+### Sniff_Arduino_Terminal
+Prints all the messages raw to the terminal in a rough CSV form. This
+is useful for finding new messages.
+
 ## Hardware
 ### [Arduino Uno](https://www.arduino.cc/en/Main/ArduinoBoardUno)<br>
 ![Arduino](http://www.arduino.cc/en/uploads/Main/ArduinoUno_R3_Front_450px.jpg)
@@ -28,11 +42,16 @@ The extremely overpriced BMW repair plug and wiring harness can be [purchased he
 
 ## Protocol Parsing
 There is a group of people working on reverse engineering the CAN bus messages
-in a [Google Spreadsheet](https://docs.google.com/spreadsheets/d/1tUrOES5fQZa92Robr6uP8v2dzQDq9ohHjUiTU3isqdc/edit#gid=0). I've used this as the basis for my parsing, but have
+in a [Google Spreadsheet](https://docs.google.com/spreadsheets/d/1tUrOES5fQZa92Robr6uP8v2dzQDq9ohHjUiTU3isqdc/edit#gid=0).
+I've used this as the basis for my parsing, but have
 found some of the information to be incorrect.
 
 ## TFT Display
-One of the more "whiz-bang" features I added was a [TFT display](https://learn.adafruit.com/1-8-tft-display/breakout-assembly) that allows me to see the status of the bike without staring at the computer screen. It most likely won't be used in the final implementation but I thought it was a cool demo.
+One of the more "whiz-bang" features I added was a
+[TFT display](https://learn.adafruit.com/1-8-tft-display/breakout-assembly)
+that allows me to see the status of the bike without staring at
+the computer screen. It most likely won't be used in the final
+implementation but I thought it was a cool demo.
 
 ## Prototype Case for Arduino with the CAN Bus Shield
 [The Congers CANBusGateway Project](http://development.thecongers.org/home/canbusgateway) had a case design that I modified slightly to use the CAN Bus screw down connections instead of the DB9 connector. Those files are included [in this repo](Mechanicals/).
