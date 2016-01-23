@@ -205,10 +205,11 @@ void process_CAN_Messages()
 void print_status()
 {
   String text = "";
-
+  /*
   text += "Throttle: ";
   text += motorcycle_state.throttle_position;
   text += "%        \n";
+  */
 
   text += "Heated Grips: ";
   if ( motorcycle_state.heated_grips == K25_Heated_Grips_State_off ) text += "OFF";
@@ -257,12 +258,13 @@ void print_status()
   else if ( motorcycle_state.abs_system == K25_ABS_State_on ) text += "ON";
   else text += "Unknown";
   text += "       \n";
-
+/*
   text += "ALS: ";
   if ( motorcycle_state.als == K25_ALS_State_dark ) text += "DARK";
   else if ( motorcycle_state.als == K25_ALS_State_light ) text += "LIGHT";
   else text += "Unknown";
   text += "       \n";
+*/
 
 #if PRINT_STATUS_TO_SERIAL_CONSOLE
   Serial.println(text);
