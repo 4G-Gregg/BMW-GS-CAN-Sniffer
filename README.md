@@ -8,16 +8,16 @@ Create a device capable of sniffing the CAN Bus of a 2010 BMW R1200 GS motorcycl
 [Full Video on YouTube](https://youtu.be/-c5wJQV1saM)
 
 ## Applications
-### Accessory_Controller
+### [Accessory_Controller](Accessory_Controller/)
 This will be the main application for driving the LED auxiliary
 light and heated jacket implementation.
 
-### Event_Printer
+### [Event_Printer](Event_Printer/)
 Prints out all known events to either the TFT display or the
 serial terminal. This is mostly used for debugging, demos, and
 new message discovery.
 
-### Sniff_Arduino_Terminal
+### [Sniff_Arduino_Terminal](Sniff_Arduino_Terminal/)
 Prints all the messages raw to the terminal in a rough CSV form. This
 is useful for finding new messages.
 
