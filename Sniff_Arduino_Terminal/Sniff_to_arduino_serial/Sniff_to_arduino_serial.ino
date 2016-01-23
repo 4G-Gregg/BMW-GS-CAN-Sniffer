@@ -20,8 +20,8 @@ START_INIT:
     //Set filters
     // Look for button presses
     CAN.init_Filt(0, 0, 0x2D0); // ZFE
-    CAN.init_Filt(1, 0, 0x294); // ABS
-    CAN.init_Filt(2, 0, 0x130); // ZFE 2
+    //CAN.init_Filt(1, 0, 0x294); // ABS
+    //CAN.init_Filt(2, 0, 0x130); // ZFE 2
     /*
     CAN.init_Filt(0, 0, 0x10C);
     CAN.init_Filt(1, 0, 0x130);
