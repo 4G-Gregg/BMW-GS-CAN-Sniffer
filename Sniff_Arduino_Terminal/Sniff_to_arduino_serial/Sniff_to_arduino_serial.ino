@@ -9,13 +9,9 @@ void setup(){
 
 START_INIT:
     if(CAN_OK != CAN.begin(CAN_500KBPS)){
-        Serial.println("Failed to initialize CAN");
-        Serial.println("Retrying..");
         delay(100);
         goto START_INIT;
     }
-
-    Serial.println("Starting to initialize CAN");
 
     //Set filter masks
     CAN.init_Mask(0, 0, 0xfff);
@@ -36,7 +32,9 @@ START_INIT:
     CAN.init_Filt(6, 0, 0x2A8);
     CAN.init_Filt(7, 0, 0x3FF);
     */
-    Serial.println("CAN Initialized");
+    // Print in CSV format
+    Serial.println("time, CAN-ID, b0, b1, b2, b3, b4, b5, b6, b7");
+    Serial.println();
 }
 
 
@@ -45,10 +43,10 @@ void loop(){
     unsigned char data[8];
 
     // Print in CSV format
-    Serial.println("CAN-ID, b0, b1, b2, b3, b4, b5, b6, b7");
-    Serial.println();
     if(CAN_MSGAVAIL == CAN.checkReceive()){
         CAN.readMsgBuf(&length, data);
+        Serial.print(millis());
+        Serial.print(",");
         Serial.print(CAN.getCanId(),HEX);
         for(int i = 0; i<length; i++){
             Serial.print(",");
