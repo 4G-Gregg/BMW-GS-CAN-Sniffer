@@ -29,8 +29,8 @@
 
 /* TFT Pin Defines */
 #define TFT_CS     10
-#define TFT_RST    9
-#define TFT_DC     8
+#define TFT_RST    7
+#define TFT_DC     4
 
 /* Globals */
 MCP_CAN CAN(9);
