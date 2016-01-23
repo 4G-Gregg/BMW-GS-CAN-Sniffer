@@ -38,15 +38,15 @@ void setup()
 void loop()
 {
   process_CAN_Messages();
-  if (status_changed && PRINT_STATUS_TO_SERIAL_CONSOLE)
+  if (status_changed)
   {
-      print_status();
+      set_pin_states();
+      if (PRINT_STATUS_TO_SERIAL_CONSOLE) print_status();
       status_changed = false;
   }
 }
 
 /* Init Helpers */
-
 void init_CAN_bus()
 {
   while (CAN_OK != CAN.begin(CAN_500KBPS)) {
@@ -119,6 +119,11 @@ void process_CAN_Messages()
           } break;
         }
      }
+}
+
+void set_pin_states()
+{
+    
 }
 
 /* Print Functions */
