@@ -5,9 +5,9 @@ typedef float K25_Throttle_Position_t;
 
 enum K25_Heated_Grips_State
 {
-    K25_Heated_Grips_State_off  = 0x0F,
-    K25_Heated_Grips_State_low  = 0x0C,
-    K25_Heated_Grips_State_high = 0x0D
+    K25_Heated_Grips_State_off  = 0x0C,
+    K25_Heated_Grips_State_low  = 0x0D,
+    K25_Heated_Grips_State_high = 0x0E
 };
 
 enum K25_Turn_Signals_State
