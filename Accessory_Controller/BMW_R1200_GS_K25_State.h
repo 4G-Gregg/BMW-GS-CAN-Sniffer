@@ -30,6 +30,12 @@ enum K25_Info_Button_State
     K25_Info_Button_State_long_press  = 0x06
 };
 
+enum K25_ABS_Button_State
+{
+    K25_ABS_Button_State_off = 0x05,
+    K25_ABS_Button_State_on  = 0x06
+};
+
 enum K25_Clutch_Lever_State
 {
     K25_Clutch_Lever_State_out = 0x06,
@@ -66,4 +72,5 @@ typedef struct
     K25_Brake_Lever_State brake_levers;
     K25_ABS_State abs_system;
     K25_ALS_State als;
+    K25_ABS_Button_State abs_button;
 } K25_State_t;
