@@ -74,3 +74,20 @@ typedef struct
     K25_ALS_State als;
     K25_ABS_Button_State abs_button;
 } K25_State_t;
+
+typedef enum Heated_Jacket_State
+{
+    Heated_Jacket_State_Off,
+    Heated_Jacket_State_1,
+    Heated_Jacket_State_2,
+    Heated_Jacket_State_3,
+    Heated_Jacket_State_4,
+    Heated_Jacket_State_5
+} Heated_Jacket_State_t;
+
+typedef enum
+{
+    Aux_Light_Off,
+    Aux_Light_Low,
+    Aux_Light_High
+} Aux_Light_State_t;

@@ -26,7 +26,10 @@
 /* Globals */
 MCP_CAN CAN(9);
 K25_State_t motorcycle_state;
+Heated_Jacket_State_t heated_jacket_state = Heated_Jacket_State_Off;
+Aux_Light_State_t aux_light_state = Aux_Light_Off;
 bool status_changed = true;
+bool abs_button_pressed = false;
 
 /* Arduino Functions */
 void setup()
@@ -40,9 +43,12 @@ void loop()
   process_CAN_Messages();
   if (status_changed)
   {
-      set_pin_states();
+      set_aux_light_state();
+      set_heated_jacket_state();
       if (PRINT_STATUS_TO_SERIAL_CONSOLE) print_status();
       status_changed = false;
+      // TODO:There's a bug here. I should only watch for touch down once, then reset when up
+      abs_button_pressed = false;
   }
 }
 
@@ -89,6 +95,7 @@ void process_CAN_Messages()
               {
                 status_changed = true;
                 motorcycle_state.abs_button = (K25_ABS_Button_State)new_value;
+                if (motorcycle_state.abs_button == K25_ABS_Button_State_on) abs_button_pressed = true;
               }
           } break;
 
@@ -132,9 +139,71 @@ void process_CAN_Messages()
      }
 }
 
-void set_pin_states()
+/* State Change Functions */
+void set_accessory_states()
 {
-    
+    set_aux_light_state();
+    set_heated_jacket_state();
+}
+
+void set_aux_light_state()
+{
+    // Day Time
+    if (motorcycle_state.als == K25_ALS_State_light)
+    {
+        set_aux_light_state_high();
+    }
+    // Night Time
+    else
+    {
+        // Night Time but high beams are on...
+        if (motorcycle_state.high_beam == K25_High_Beam_State_on)
+        {
+            set_aux_light_state_high();
+        }
+        else
+        {
+            set_aux_light_state_low();
+        }
+    }
+}
+
+void set_aux_light_state_high()
+{
+
+}
+
+void set_aux_light_state_low()
+{
+
+}
+
+void set_heated_jacket_state()
+{
+    // heated jacket can only be on if heated grips are on
+    if (motorcycle_state.heated_grips != K25_Heated_Grips_State_off)
+    {
+        if (heated_jacket_state == Heated_Jacket_State_Off)
+        {
+            set_heated_jacket_level(1);
+        }
+    }
+    else
+    {
+        set_heated_jacket_off();
+    }
+}
+
+void set_heated_jacket_off()
+{
+
+}
+
+void set_heated_jacket_level(int level)
+{
+    // NOTE: The heated jacket controller was doing PWM at 1 Hz. This should try to be replicated here.
+    // NOTE: The following example seems to do just that: http://playground.arduino.cc/Code/Timer1
+
 }
 
 /* Print Functions */
