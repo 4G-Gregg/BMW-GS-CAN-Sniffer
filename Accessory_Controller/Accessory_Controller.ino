@@ -62,6 +62,7 @@ void init_CAN_bus()
   CAN.init_Mask(1, 0, 0xfff);
 
   // Set filters
+  CAN.init_Filt(0, 0, MSD_ID_BMSK_Control_Module);
   CAN.init_Filt(1, 0, MSG_ID_ZFE_Control_Module);
   CAN.init_Filt(2, 0, MSG_ID_ZFE_Control_Module_2);
   CAN.init_Filt(3, 0, MSG_ID_Instrument_Cluster_2);
@@ -81,6 +82,16 @@ void process_CAN_Messages()
         CAN.readMsgBuf(&length, data);
         switch(CAN.getCanId())
         {
+          case MSD_ID_BMSK_Control_Module:
+          {
+              new_value = LO_NIBBLE(data[5]);
+              if ( new_value != motorcycle_state.abs_button )
+              {
+                status_changed = true;
+                motorcycle_state.abs_button = (K25_ABS_Button_State)new_value;
+              }
+          } break;
+
           case MSG_ID_ZFE_Control_Module:
           {
               new_value = LO_NIBBLE(data[6]);
@@ -149,6 +160,12 @@ void print_status()
   else if ( motorcycle_state.high_beam == K25_High_Beam_State_on ) text += "ON";
   else text += "Unknown";
   text += "       \n";
+
+  text += "ABS Button: ";
+  if ( motorcycle_state.abs_button == K25_ABS_Button_State_off ) text += "OFF";
+  else if ( motorcycle_state.abs_button == K25_ABS_Button_State_on ) text += "ON";
+  else text += "Unknown";
+  text += "       \n" ;
 
   text += "ALS: ";
   if ( motorcycle_state.als == K25_ALS_State_dark ) text += "DARK";
