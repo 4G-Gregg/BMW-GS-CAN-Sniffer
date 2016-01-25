@@ -41,7 +41,7 @@ void setup()
 void loop()
 {
   process_CAN_Messages();
-  if (status_changed)
+  if ( status_changed )
   {
       set_aux_light_state();
 
@@ -59,7 +59,7 @@ void loop()
 /* Init Helpers */
 void init_CAN_bus()
 {
-  while (CAN_OK != CAN.begin(CAN_500KBPS)) {
+  while ( CAN_OK != CAN.begin(CAN_500KBPS) ) {
     DEBUG_PRINT_LN("Failed to initialize CAN");
     DEBUG_PRINT_LN("Retrying..");
     delay(100);
@@ -87,10 +87,10 @@ void process_CAN_Messages()
     byte data[8];
     byte new_value = 0;
 
-     if(CAN_MSGAVAIL == CAN.checkReceive())
+     if( CAN_MSGAVAIL == CAN.checkReceive() )
      {
         CAN.readMsgBuf(&length, data);
-        switch(CAN.getCanId())
+        switch( CAN.getCanId() )
         {
           case MSD_ID_BMSK_Control_Module:
           {
@@ -150,14 +150,13 @@ void process_CAN_Messages()
 /* State Change Functions */
 void handle_abs_button_event()
 {
-    set_aux_light_state();
-    set_heated_jacket_state();
+
 }
 
 void set_aux_light_state()
 {
     // Day Time
-    if (motorcycle_state.als == K25_ALS_State_light)
+    if ( motorcycle_state.als == K25_ALS_State_light )
     {
         set_aux_light_state_high();
     }
@@ -176,42 +175,22 @@ void set_aux_light_state()
     }
 }
 
-void set_aux_light_state_high()
-{
-
-}
-
-void set_aux_light_state_low()
-{
-
-}
-
 void set_heated_jacket_state()
 {
     // heated jacket can only be on if heated grips are on
-    if (motorcycle_state.heated_grips != K25_Heated_Grips_State_off)
+    if ( motorcycle_state.heated_grips != K25_Heated_Grips_State_off )
     {
-        if (heated_jacket_state == Heated_Jacket_State_Off)
+        if ( heated_jacket_state == Heated_Jacket_State_Off )
         {
             set_heated_jacket_level(1);
+            // NOTE: The heated jacket controller was doing PWM at 1 Hz. This should try to be replicated here.
+            // NOTE: The following example seems to do just that: http://playground.arduino.cc/Code/Timer1
         }
     }
     else
     {
         set_heated_jacket_off();
     }
-}
-
-void set_heated_jacket_off()
-{
-
-}
-
-void set_heated_jacket_level(int level)
-{
-    // NOTE: The heated jacket controller was doing PWM at 1 Hz. This should try to be replicated here.
-    // NOTE: The following example seems to do just that: http://playground.arduino.cc/Code/Timer1
-
 }
 
 /* Print Functions */
