@@ -160,7 +160,7 @@ void process_CAN_Messages()
                   motorcycle_state.heated_grips = (K25_Heated_Grips_State)new_value;
               }
 
-              new_value = HI_NIBBLE(data[5]);
+              new_value = LO_NIBBLE(data[5]);
               if ( new_value != motorcycle_state.info_button )
               {
                   status_changed = true;
@@ -239,13 +239,11 @@ void print_status()
   else text += "Unknown";
   text += "       \n";
 
-  /* INFO BUTTON CURRENTLY NOT WORKING
   text += "Info Button: ";
   if ( motorcycle_state.info_button == K25_Info_Button_State_short_press ) text += "SHORT";
   else if ( motorcycle_state.info_button == K25_Info_Button_State_long_press ) text += "LONG";
   else text += "Unknown";
   text += "\n";
-  */
 
   text += "Clutch: ";
   if ( motorcycle_state.clutch == K25_Clutch_Lever_State_out ) text += "OUT";
