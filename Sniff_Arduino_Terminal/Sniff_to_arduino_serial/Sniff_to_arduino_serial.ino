@@ -33,7 +33,7 @@ START_INIT:
     CAN.init_Filt(7, 0, 0x3FF);
     */
     // Print in CSV format
-    Serial.println("time, CAN-ID, b0, b1, b2, b3, b4, b5, b6, b7");
+    Serial.println("time,CAN-ID,b0,b1,b2,b3,b4,b5,b6,b7");
     Serial.println();
 }
 
