@@ -29,7 +29,7 @@ K25_State_t motorcycle_state;
 Heated_Jacket_State_t heated_jacket_state = Heated_Jacket_State_Off;
 Aux_Light_State_t aux_light_state = Aux_Light_Off;
 bool status_changed = true;
-bool abs_button_pressed = false;
+bool abs_button_up_event = false;
 
 /* Arduino Functions */
 void setup()
@@ -44,11 +44,15 @@ void loop()
   if (status_changed)
   {
       set_aux_light_state();
-      set_heated_jacket_state();
-      if (PRINT_STATUS_TO_SERIAL_CONSOLE) print_status();
+
+      if ( abs_button_up_event )
+      {
+          handle_abs_button_event();
+          abs_button_up_event = false;
+      }
+
       status_changed = false;
-      // TODO:There's a bug here. I should only watch for touch down once, then reset when up
-      abs_button_pressed = false;
+      if ( PRINT_STATUS_TO_SERIAL_CONSOLE ) print_status();
   }
 }
 
@@ -94,8 +98,12 @@ void process_CAN_Messages()
               if ( new_value != motorcycle_state.abs_button )
               {
                 status_changed = true;
+                if ( motorcycle_state.abs_button == K25_ABS_Button_State_on &&
+                     new_value == K25_ABS_Button_State_off )
+                {
+                    abs_button_up_event = true;
+                }
                 motorcycle_state.abs_button = (K25_ABS_Button_State)new_value;
-                if (motorcycle_state.abs_button == K25_ABS_Button_State_on) abs_button_pressed = true;
               }
           } break;
 
@@ -140,7 +148,7 @@ void process_CAN_Messages()
 }
 
 /* State Change Functions */
-void set_accessory_states()
+void handle_abs_button_event()
 {
     set_aux_light_state();
     set_heated_jacket_state();
