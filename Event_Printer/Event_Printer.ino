@@ -114,6 +114,13 @@ void process_CAN_Messages()
             }
             */
 
+            new_value = LO_NIBBLE(data[5]);
+            if ( new_value != motorcycle_state.abs_button )
+            {
+                status_changed = true;
+                motorcycle_state.abs_button = (K25_ABS_Button_State)new_value;
+            }
+
             new_value = LO_NIBBLE(data[4]);
             if ( new_value != motorcycle_state.clutch )
             {
@@ -243,6 +250,12 @@ void print_status()
   text += "Clutch: ";
   if ( motorcycle_state.clutch == K25_Clutch_Lever_State_out ) text += "OUT";
   else if ( motorcycle_state.clutch == K25_Clutch_Lever_State_in ) text += "IN";
+  else text += "Unknown";
+  text += "       \n";
+
+  text += "ABS Button: ";
+  if ( motorcycle_state.abs_button == K25_ABS_Button_State_off ) text += "OFF";
+  else if ( motorcycle_state.abs_button == K25_ABS_Button_State_on ) text += "ON";
   else text += "Unknown";
   text += "       \n";
 
