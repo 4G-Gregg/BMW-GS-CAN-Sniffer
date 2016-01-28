@@ -59,13 +59,8 @@ implementation but I thought it was a cool demo.
 ![3D Printed Prototype Case](http://i.imgur.com/rbw4ONJ.jpg)
 
 ## Interfacing With Accessories
-
-### Options for driving the heated jacket load
-1. [10A Motor Driver, Solid State Relay](https://www.dimensionengineering.com/products/syren10)
-1. [10A 60V Solid State Relay](http://www.allelectronics.com/make-a-store/item/srly-610/10a-60vdc-solid-state-relay/1.html)
-
-### Options for driving the LED Aux Lights
-TBD
+###[SparkFun Monster Motor Shield](https://www.sparkfun.com/products/10182)<br>
+![SparkFun Monster Motor Shield](https://cdn.sparkfun.com//assets/parts/4/4/9/1/10182-01.jpg)
 
 ## Resources
 - [The Congers CANBusGateway Project](http://development.thecongers.org/home/canbusgateway)
