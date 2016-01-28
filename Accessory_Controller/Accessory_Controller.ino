@@ -23,6 +23,16 @@
     #define DEBUG_PRINT_LN(...)
 #endif
 
+/* PIN Defines */
+#define AUX_LIGHT_LEFT_POWER_CONTROL_PIN 7
+#define AUX_LIGHT_LEFT_PWM_PIN 5
+#define AUX_LIGHT_RIGHT_POWER_CONTROL_PIN 8
+#define AUX_LIGHT_RIGHT_PWM_PIN 6
+
+#define AUX_LIGHT_PWM_BRIGHTNESS_OFF  0
+#define AUX_LIGHT_PWM_BRIGHTNESS_LOW  170 // TODO: Determine the correct value here, 191 ~ 75% to reach the 8v number
+#define AUX_LIGHT_PWM_BRIGHTNESS_HIGH 255
+
 /* Globals */
 MCP_CAN CAN(9);
 K25_State_t motorcycle_state;
@@ -35,6 +45,7 @@ bool abs_button_up_event = false;
 void setup()
 {
   Serial.begin(115200);
+  init_aux_light_controller();
   init_CAN_bus();
 }
 
@@ -78,6 +89,18 @@ void init_CAN_bus()
   CAN.init_Filt(3, 0, MSG_ID_Instrument_Cluster_2);
 
   Serial.println("CAN Initialized");
+}
+
+void init_aux_light_controller()
+{
+  // Set control pins to outputs
+  pinMode(AUX_LIGHT_LEFT_POWER_CONTROL_PIN, OUTPUT);
+  pinMode(AUX_LIGHT_LEFT_PWM_PIN, OUTPUT);
+  pinMode(AUX_LIGHT_RIGHT_POWER_CONTROL_PIN, OUTPUT);
+  pinMode(AUX_LIGHT_RIGHT_PWM_PIN, OUTPUT);  
+
+  // Initially set them to off
+  set_aux_light_state_off();
 }
 
 /* Event Processors */
@@ -175,6 +198,33 @@ void set_aux_light_state()
     }
 }
 
+
+void set_aux_light_state_high()
+{
+  digitalWrite(AUX_LIGHT_LEFT_POWER_CONTROL_PIN, HIGH);
+  digitalWrite(AUX_LIGHT_RIGHT_POWER_CONTROL_PIN, HIGH);  
+  analogWrite(AUX_LIGHT_LEFT_PWM_PIN, AUX_LIGHT_PWM_BRIGHTNESS_HIGH);
+  analogWrite(AUX_LIGHT_RIGHT_PWM_PIN, AUX_LIGHT_PWM_BRIGHTNESS_HIGH);
+}
+
+void set_aux_light_state_low()
+{
+  digitalWrite(AUX_LIGHT_LEFT_POWER_CONTROL_PIN, HIGH);
+  digitalWrite(AUX_LIGHT_RIGHT_POWER_CONTROL_PIN, HIGH);  
+  analogWrite(AUX_LIGHT_LEFT_PWM_PIN, AUX_LIGHT_PWM_BRIGHTNESS_LOW);
+  analogWrite(AUX_LIGHT_RIGHT_PWM_PIN, AUX_LIGHT_PWM_BRIGHTNESS_LOW);
+}
+
+
+void set_aux_light_state_off()
+{
+  digitalWrite(AUX_LIGHT_LEFT_POWER_CONTROL_PIN, LOW);
+  digitalWrite(AUX_LIGHT_RIGHT_POWER_CONTROL_PIN, LOW);  
+  analogWrite(AUX_LIGHT_LEFT_PWM_PIN, AUX_LIGHT_PWM_BRIGHTNESS_OFF);
+  analogWrite(AUX_LIGHT_RIGHT_PWM_PIN, AUX_LIGHT_PWM_BRIGHTNESS_OFF);
+}
+
+/*
 void set_heated_jacket_state()
 {
     // heated jacket can only be on if heated grips are on
@@ -192,6 +242,7 @@ void set_heated_jacket_state()
         set_heated_jacket_off();
     }
 }
+*/
 
 /* Print Functions */
 void print_status()
