@@ -327,5 +327,20 @@ void print_status()
   else text += "Unknown";
   text += "       \n";
 
+  text += "Aux Lights: ";
+  if ( aux_light_state == Aux_Light_Off ) text += "OFF";
+  else if ( aux_light_state == Aux_Light_Low ) text += "LOW";
+  else if ( aux_light_state == Aux_Light_Low ) text += "HIGH";
+  text += "   \n";
+
+  text += "Jacket: ";
+  if ( heated_jacket_state == Heated_Jacket_State_Off ) text += "OFF";
+  else if ( heated_jacket_state == Heated_Jacket_State_1 ) text += "1";
+  else if ( heated_jacket_state == Heated_Jacket_State_2 ) text += "2";
+  else if ( heated_jacket_state == Heated_Jacket_State_3 ) text += "3";
+  else if ( heated_jacket_state == Heated_Jacket_State_4 ) text += "4";
+  else if ( heated_jacket_state == Heated_Jacket_State_5 ) text += "5";
+  text += "   \n";
+
   Serial.println(text);
 }
