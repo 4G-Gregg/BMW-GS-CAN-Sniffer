@@ -57,8 +57,8 @@ enum K25_ABS_State
 
 enum K25_ALS_State
 {
-    K25_ALS_State_dark  = 0x07,
-    K25_ALS_State_light = 0x03
+    K25_ALS_State_dark  = 0x0B,
+    K25_ALS_State_light = 0x07
 };
 
 typedef struct
