@@ -52,18 +52,14 @@ void setup()
 void loop()
 {
   process_CAN_Messages();
+
   if ( status_changed )
   {
       set_aux_light_state();
-
-      if ( abs_button_up_event )
-      {
-          handle_abs_button_event();
-          abs_button_up_event = false;
-      }
-
-      status_changed = false;
+      if ( motorcycle_state.heated_grips == K25_Heated_Grips_State_off ) set_heated_jacket_off();
+      if ( abs_button_up_event ) handle_abs_button_event();
       if ( PRINT_STATUS_TO_SERIAL_CONSOLE ) print_status();
+      status_changed = false;
   }
 }
 
@@ -173,7 +169,43 @@ void process_CAN_Messages()
 /* State Change Functions */
 void handle_abs_button_event()
 {
+    if (motorcycle_state.heated_grips != K25_Heated_Grips_State_off)
+    {
+        switch (heated_jacket_state)
+        {
+            case Heated_Jacket_State_Off:
+            {
+                heated_jacket_state = Heated_Jacket_State_1;
+            } break;
 
+            case Heated_Jacket_State_1:
+            {
+                heated_jacket_state = Heated_Jacket_State_2;
+            } break;
+
+            case Heated_Jacket_State_2:
+            {
+                heated_jacket_state = Heated_Jacket_State_3;
+            } break;
+
+            case Heated_Jacket_State_3:
+            {
+                heated_jacket_state = Heated_Jacket_State_4;
+            } break;
+
+            case Heated_Jacket_State_4:
+            {
+                heated_jacket_state = Heated_Jacket_State_5;
+            } break;
+
+            case Heated_Jacket_State_5:
+            {
+                heated_jacket_state = Heated_Jacket_State_Off;
+            } break;
+        }
+        set_heated_jacket_state();
+    }
+    abs_button_up_event = false;
 }
 
 void set_aux_light_state()
@@ -198,35 +230,45 @@ void set_aux_light_state()
     }
 }
 
-
 void set_aux_light_state_high()
 {
-  digitalWrite(AUX_LIGHT_1_POWER_CONTROL_PIN, HIGH);
-  digitalWrite(AUX_LIGHT_2_POWER_CONTROL_PIN, LOW);  
-  analogWrite(AUX_LIGHT_1_PWM_PIN, AUX_LIGHT_PWM_BRIGHTNESS_HIGH);
-  analogWrite(AUX_LIGHT_2_PWM_PIN, AUX_LIGHT_PWM_BRIGHTNESS_HIGH);
+    if ( aux_light_state != Aux_Light_High )
+    {
+        aux_light_state = Aux_Light_High;
+        digitalWrite(AUX_LIGHT_1_POWER_CONTROL_PIN, HIGH);
+        digitalWrite(AUX_LIGHT_2_POWER_CONTROL_PIN, LOW);
+        analogWrite(AUX_LIGHT_1_PWM_PIN, AUX_LIGHT_PWM_BRIGHTNESS_HIGH);
+        analogWrite(AUX_LIGHT_2_PWM_PIN, AUX_LIGHT_PWM_BRIGHTNESS_HIGH);
+    }
 }
 
 void set_aux_light_state_low()
 {
-  digitalWrite(AUX_LIGHT_1_POWER_CONTROL_PIN, HIGH);
-  digitalWrite(AUX_LIGHT_2_POWER_CONTROL_PIN, LOW);  
-  analogWrite(AUX_LIGHT_1_PWM_PIN, AUX_LIGHT_PWM_BRIGHTNESS_LOW);
-  analogWrite(AUX_LIGHT_2_PWM_PIN, AUX_LIGHT_PWM_BRIGHTNESS_LOW);
+    if ( aux_light_state != Aux_Light_Low )
+    {
+        aux_light_state = Aux_Light_Low;
+        digitalWrite(AUX_LIGHT_1_POWER_CONTROL_PIN, HIGH);
+        digitalWrite(AUX_LIGHT_2_POWER_CONTROL_PIN, LOW);
+        analogWrite(AUX_LIGHT_1_PWM_PIN, AUX_LIGHT_PWM_BRIGHTNESS_LOW);
+        analogWrite(AUX_LIGHT_2_PWM_PIN, AUX_LIGHT_PWM_BRIGHTNESS_LOW);
+    }
 }
-
 
 void set_aux_light_state_off()
 {
-  digitalWrite(AUX_LIGHT_1_POWER_CONTROL_PIN, LOW);
-  digitalWrite(AUX_LIGHT_2_POWER_CONTROL_PIN, HIGH);  
-  analogWrite(AUX_LIGHT_1_PWM_PIN, AUX_LIGHT_PWM_BRIGHTNESS_OFF);
-  analogWrite(AUX_LIGHT_2_PWM_PIN, AUX_LIGHT_PWM_BRIGHTNESS_OFF);
+    if ( aux_light_state != Aux_Light_Off )
+    {
+        aux_light_state = Aux_Light_Off;
+        digitalWrite(AUX_LIGHT_1_POWER_CONTROL_PIN, LOW);
+        digitalWrite(AUX_LIGHT_2_POWER_CONTROL_PIN, HIGH);
+        analogWrite(AUX_LIGHT_1_PWM_PIN, AUX_LIGHT_PWM_BRIGHTNESS_OFF);
+        analogWrite(AUX_LIGHT_2_PWM_PIN, AUX_LIGHT_PWM_BRIGHTNESS_OFF);
+    }
 }
 
-/*
 void set_heated_jacket_state()
 {
+    /*
     // heated jacket can only be on if heated grips are on
     if ( motorcycle_state.heated_grips != K25_Heated_Grips_State_off )
     {
@@ -241,8 +283,13 @@ void set_heated_jacket_state()
     {
         set_heated_jacket_off();
     }
+    */
 }
-*/
+
+void set_heated_jacket_off()
+{
+    // TODO: Set heated jacket state to off
+}
 
 /* Print Functions */
 void print_status()
