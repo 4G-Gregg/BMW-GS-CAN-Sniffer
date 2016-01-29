@@ -30,7 +30,7 @@
 #define AUX_LIGHT_2_PWM_PIN 6
 
 #define AUX_LIGHT_PWM_BRIGHTNESS_OFF  0
-#define AUX_LIGHT_PWM_BRIGHTNESS_LOW  170 // TODO: Determine the correct value here to achieve 8v
+#define AUX_LIGHT_PWM_BRIGHTNESS_LOW  170 // TODO: Determine the correct value here to achieve 8 Volts
 #define AUX_LIGHT_PWM_BRIGHTNESS_HIGH 255
 
 /* Globals */
@@ -75,6 +75,7 @@ void init_CAN_bus()
   DEBUG_PRINT_LN("Starting to initialize CAN");
 
   // Set filter masks
+  // TODO: See if this is the right thing to be doing for the filters I want
   CAN.init_Mask(0, 0, 0xfff);
   CAN.init_Mask(1, 0, 0xfff);
 
